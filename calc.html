@@ -1,13 +1,15 @@
-<html lang="ru" style="--tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
   <!-- === МЕТАДАННЫЕ === -->
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>$MORI COIN Калькулятор</title>
   <!-- === TELEGRAM WEBAPP === -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- === ИКОНКИ И ФАВИКОН === -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="icon" href="https://moristake.in/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" href="https://moristake.in/images/favicon.ico" type="image/x-icon" />
   <!-- === ШРИФТ === -->
   <style>
     @font-face {
@@ -117,10 +119,10 @@
     <p class="subtitle">(с прогнозом дохода)</p>
 
     <div class="currency-toggle">
-      <button id="btnUSD" class="">
+      <button id="btnUSD" class="active">
         <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USD"> USD
       </button>
-      <button id="btnRUB" class="active">
+      <button id="btnRUB">
         <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="RUB"> RUB
       </button>
     </div>
@@ -134,7 +136,7 @@
       <label for="tokenPrice">Желаемая цена $MORI</label>
       <div class="price-row">
         <input type="text" step="0.001" id="tokenPrice" class="price-input" placeholder="0,00">
-        <div class="price-btn" id="priceBtn">Текущая: 2.34 ₽</div>
+        <div class="price-btn" id="priceBtn">Текущая цена</div>
       </div>
       <div class="comment">Цена 1 MORI в выбранной валюте</div>
       <p style="font-size:12px; color:rgba(255,255,255,0.6); margin:4px 0 0; text-align:center; line-height:1.2;">
@@ -142,15 +144,15 @@
       </p>
     </div>
 
-    <button class="btn" id="calcBtn">Рассчитать</button>
+    <button class="btn" id="calcBtn" disabled>Рассчитать</button>
 
     <div class="course-info" id="courseInfo">
-      Курс USD/RUB: <span id="courseStatus" class="">80.92 <small>(на 10.11.2025, обновлено: 15:34)</small></span>
+      Курс USD/RUB: <span id="courseStatus">Загрузка...</span>
     </div>
 
-    <div class="results" id="resultsBlock" style="display: block; opacity: 1;">
-      <div id="resultPrimary"><p>Стоимость в RUB: <strong class="highlight">758&nbsp;918 ₽</strong></p></div>
-      <div id="resultSecondary"><p>Стоимость в USD: <strong class="highlight">9&nbsp;378,62 $</strong></p></div>
+    <div class="results" id="resultsBlock">
+      <div id="resultPrimary"></div>
+      <div id="resultSecondary"></div>
     </div>
   </div>
 
@@ -324,5 +326,5 @@
       }
     };
   </script>
-
-</body></html>
+</body>
+</html>
