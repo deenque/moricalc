@@ -1,52 +1,38 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <!-- === МЕТАДАННЫЕ === -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>$MORI COIN Калькулятор</title>
-  <!-- === TELEGRAM WEBAPP === -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <!-- === ИКОНКИ И ФАВИКОН === -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="icon" href="https://moristake.in/images/favicon.ico" type="image/x-icon" />
-  <!-- === ШРИФТ === -->
   <style>
     @font-face {
       font-family: 'TT Firs Neue';
       src: url('https://moristake.in/fonts/TTFirsNeue-Regular.ttf') format('truetype');
       font-display: swap;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      width: 100%; height: 100%; overflow: hidden;
-      background: radial-gradient(circle at 50% 50%, #1b1a12 0%, #000 100%);
-      color: #fff; font-family: 'TT Firs Neue', sans-serif;
-    }
-    body {
-      display: flex; justify-content: center; align-items: center;
-      position: fixed; inset: 0;
-      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-      min-height: 100dvh;
-    }
-    .calculator {
-      backdrop-filter: blur(20px) saturate(180%);
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 24px;
-      box-shadow: 0 8px 32px rgba(255,213,0,.2);
-      padding: 24px 20px;
-      width: 100%; max-width: 380px;
-      z-index: 2; position: relative; margin: 0 auto;
-    }
-    h2 {
-      text-align: center; margin-bottom: 4px;
-      color: #FFD500; font-weight: 600; font-size: 20px; line-height: 1.2;
-    }
-    .subtitle {
-      text-align: center; color: rgba(255,255,255,.7);
-      font-size: 13px; margin-bottom: 16px;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html,body{width:100%;height:100%;overflow:hidden;
+      background:radial-gradient(circle at 50% 50%,#1b1a12 0%,#000 100%);
+      color:#fff;font-family:'TT Firs Neue',sans-serif;}
+    body{display:flex;justify-content:center;align-items:center;
+      position:fixed;inset:0;
+      padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      min-height:100dvh;}
+    .calculator{
+      backdrop-filter:blur(20px) saturate(180%);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:24px;
+      box-shadow:0 8px 32px rgba(255,213,0,.2);
+      padding:24px 20px;
+      width:100%;max-width:380px;
+      z-index:2;position:relative;margin:0 auto;}
+    h2{text-align:center;margin-bottom:4px;color:#FFD500;font-weight:600;font-size:20px;line-height:1.2;}
+    .subtitle{text-align:center;color:rgba(255,255,255,.7);font-size:13px;margin-bottom:16px;}
+
     .currency-toggle {
       display: flex; justify-content: center; gap: 8px; margin-bottom: 18px;
     }
@@ -60,21 +46,30 @@
       color: #FFD500; font-weight: 600;
       background: rgba(255,213,0,.15); border-color: #FFD500;
     }
-    .currency-toggle button img {
-      width: 18px; height: 12px; border-radius: 2px;
-    }
+    .currency-toggle button img { width: 18px; height: 12px; border-radius: 2px; }
+
     .input-group { margin-bottom: 16px; }
-    label {
-      font-size: 13px; color: rgba(255,255,255,.7);
-      display: block; margin-bottom: 6px;
+    label { font-size: 13px; color: rgba(255,255,255,.7); display: block; margin-bottom: 6px; }
+    .mode-toggle {
+      display: flex; gap: 8px; margin-top: 8px; margin-bottom: 12px;
     }
+    .mode-toggle button {
+      flex: 1; background: rgba(255,255,255,.07); border-radius: 12px; padding: 8px 0;
+      border: 1px solid rgba(255,255,255,.1); color: #fff; font-size: 13px;
+      transition: all .3s; cursor: pointer;
+    }
+    .mode-toggle button.active {
+      color: #FFD500; font-weight: 600;
+      background: rgba(255,213,0,.15); border-color: #FFD500;
+    }
+
     .token-input, .price-input {
       width: 100%; padding: 12px 14px; border-radius: 12px; border: none; outline: none;
       font-size: 15px; text-align: center; background: rgba(255,255,255,.1); color: #fff;
       min-height: 48px;
     }
-    .price-input { width: 130px; padding: 12px 8px; flex-shrink: 0; }
     .token-input::placeholder, .price-input::placeholder { color: rgba(255,255,255,.4); }
+    .price-input { width: 130px; padding: 12px 8px; flex-shrink: 0; }
     .price-row { display: flex; align-items: center; gap: 8px; }
     .price-btn {
       flex: 1; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.3);
@@ -83,34 +78,25 @@
       overflow: hidden; text-overflow: ellipsis;
     }
     .price-btn:hover, .price-btn:active { background: rgba(255,255,255,.2); }
-    .comment {
-      text-align: center; font-size: 12px; color: rgba(255,255,255,.6); margin-top: 18px;
-    }
+    .comment { text-align: center; font-size: 12px; color:#ffd500; margin-top: 18px; }
     .btn {
-      width: 100%; background: linear-gradient(135deg, #FFD500, #BFA100);
+      width: 100%; background: linear-gradient(135deg,#FFD500,#BFA100);
       border: none; border-radius: 12px; padding: 14px; font-size: 16px;
       color: #000; font-weight: 600; cursor: pointer; transition: all .3s;
-      min-height: 52px; margin-top: 8px; font-family: 'TT Firs Neue', sans-serif;
+      min-height: 52px; margin-top: 8px; font-family: 'TT Firs Neue',sans-serif;
     }
     .btn:hover, .btn:active { transform: translateY(-1px); box-shadow: 0 0 20px rgba(255,213,0,.4); }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    .results {
-      display: none; margin-top: 16px; text-align: center;
-      opacity: 0; transition: opacity .5s ease;
-    }
-    .results p {
-      margin: 4px 0; font-size: 15px; line-height: 1.3; color: rgba(255,255,255,0.7);
-    }
+    .results { display: none; margin-top: 16px; text-align: center; opacity: 0; transition: opacity .5s ease; }
+    .results p { margin: 4px 0; font-size: 15px; line-height: 1.3; color: rgba(255,255,255,0.7); }
     .highlight {
-      background: linear-gradient(90deg, #FFD500, #FFB800);
+      background: linear-gradient(90deg,#FFD500,#FFB800);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       font-weight: 700; font-size: 17px;
     }
-    .course-info {
-      font-size: 11px; color: rgba(255,255,255,.6);
-      text-align: center; margin-top: 12px;
-    }
+    .course-info { font-size: 11px; color: rgba(255,255,255,.6); text-align: center; margin-top: 12px; }
     .course-error { color: #ff6b6b; }
+    .xp-info { font-size: 12px; color: #FFD500; text-align: center; margin-top: 8px; font-weight: 500; display: none; }
   </style>
 </head>
 <body>
@@ -118,7 +104,8 @@
     <h2>Калькулятор $MORI</h2>
     <p class="subtitle">(с прогнозом дохода)</p>
 
-    <div class="currency-toggle">
+    <!-- USD / RUB — только в режиме MORI -->
+    <div class="currency-toggle" id="currencyToggle">
       <button id="btnUSD" class="active">
         <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USD"> USD
       </button>
@@ -127,24 +114,34 @@
       </button>
     </div>
 
+    <!-- Количество + MORI/XP -->
     <div class="input-group">
-      <label for="tokenAmount">Количество ваших токенов:</label>
-      <input type="text" id="tokenAmount" class="token-input" placeholder="Например: 1000">
+      <label id="inputLabel">Количество ваших токенов:</label>
+      
+      <div class="mode-toggle">
+        <button id="btnMORI" class="active">$MORI</button>
+        <button id="btnXP">XP</button>
+      </div>
+
+      <input type="text" id="tokenInput" class="token-input" placeholder="Например: 1000">
     </div>
 
-    <div class="input-group">
-      <label for="tokenPrice">Желаемая цена $MORI</label>
+    <!-- Цена MORI (только в MORI) -->
+    <div class="input-group" id="priceGroup">
+      <label for="tokenPrice">Желаемая цена $MORI:</label>
       <div class="price-row">
         <input type="text" step="0.001" id="tokenPrice" class="price-input" placeholder="0,00">
         <div class="price-btn" id="priceBtn">Текущая цена</div>
       </div>
       <div class="comment">Цена 1 MORI в выбранной валюте</div>
-      <p style="font-size:12px; color:rgba(255,255,255,0.6); margin:4px 0 0; text-align:center; line-height:1.2;">
+      <p style="font-size:12px;color:rgba(255,255,255,0.6);margin:4px 0 0;text-align:center;line-height:1.2;">
         (выберите валюту, нажав на кнопку RUB или USD)
       </p>
     </div>
 
-    <button class="btn" id="calcBtn" disabled>Рассчитать</button>
+    <p class="xp-info" id="xpInfo">Курс: 1 $MORI = 50 XP</p>
+
+    <button class="btn" id="calcBtn">Рассчитать</button>
 
     <div class="course-info" id="courseInfo">
       Курс USD/RUB: <span id="courseStatus">Загрузка...</span>
@@ -153,6 +150,7 @@
     <div class="results" id="resultsBlock">
       <div id="resultPrimary"></div>
       <div id="resultSecondary"></div>
+      <div id="resultTertiary"></div>
     </div>
   </div>
 
@@ -160,169 +158,158 @@
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
 
-    const btnUSD = document.getElementById('btnUSD');
-    const btnRUB = document.getElementById('btnRUB');
-    const priceBtn = document.getElementById('priceBtn');
-    const calcBtn = document.getElementById('calcBtn');
-    const resultsBlock = document.getElementById('resultsBlock');
-    const resultPrimary = document.getElementById('resultPrimary');
-    const resultSecondary = document.getElementById('resultSecondary');
-    const courseStatus = document.getElementById('courseStatus');
-    const tokenPriceInput = document.getElementById('tokenPrice');
+    const btnMORI = document.getElementById('btnMORI');
+    const btnXP   = document.getElementById('btnXP');
+    const btnUSD  = document.getElementById('btnUSD');
+    const btnRUB  = document.getElementById('btnRUB');
+    const currencyToggle = document.getElementById('currencyToggle');
+    const priceGroup     = document.getElementById('priceGroup');
+    const xpInfo         = document.getElementById('xpInfo');
+    const inputLabel     = document.getElementById('inputLabel');
+    const tokenInput     = document.getElementById('tokenInput');
+    const tokenPriceInput= document.getElementById('tokenPrice');
+    const priceBtn       = document.getElementById('priceBtn');
+    const calcBtn        = document.getElementById('calcBtn');
+    const resultsBlock   = document.getElementById('resultsBlock');
+    const resultPrimary  = document.getElementById('resultPrimary');
+    const resultSecondary= document.getElementById('resultSecondary');
+    const resultTertiary = document.getElementById('resultTertiary');
+    const courseStatus   = document.getElementById('courseStatus');
 
+    let mode = 'MORI';
     let currentCurrency = 'USD';
     let priceUSD = 0;
     let priceRUB = 0;
     let usdToRub = null;
     let userHasEditedPrice = false;
+    const XP_PER_MORI = 50;
 
-    tokenPriceInput.addEventListener('input', () => {
-      userHasEditedPrice = true;
-    });
+    // === РЕЖИМЫ ===
+    btnMORI.onclick = () => {
+      if (mode === 'MORI') return;
+      mode = 'MORI';
+      btnMORI.classList.add('active'); btnXP.classList.remove('active');
+      currencyToggle.style.display = 'flex';
+      priceGroup.style.display = 'block';
+      xpInfo.style.display = 'none';
+      inputLabel.textContent = 'Количество ваших токенов:';
+      tokenInput.placeholder = 'Например: 1000';
+      resultsBlock.style.display = 'none';
+      updatePriceBtn();
+    };
 
-    // === ЗАГРУЗКА КУРСА БЕЗ FALLBACK ===
-    async function loadCourse(retryCount = 0) {
-      const maxRetries = 3;
-      courseStatus.textContent = retryCount > 0 ? `Попытка ${retryCount + 1}/${maxRetries}...` : 'Загрузка...';
-      courseStatus.className = '';
-      calcBtn.disabled = true;
+    btnXP.onclick = () => {
+      if (mode === 'XP') return;
+      mode = 'XP';
+      btnXP.classList.add('active'); btnMORI.classList.remove('active');
+      currencyToggle.style.display = 'none';
+      priceGroup.style.display = 'none';
+      xpInfo.style.display = 'block';
+      inputLabel.textContent = 'Количество вашей валюты:';
+      tokenInput.placeholder = 'Например: 5000';
+      tokenInput.value = '';
+      resultsBlock.style.display = 'none';
+    };
 
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000);
-        const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD', { signal: controller.signal });
-        clearTimeout(timeout);
-
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-
-        if (data.rates?.RUB) {
-          usdToRub = parseFloat(data.rates.RUB);
-          const now = new Date();
-          const dateStr = now.toLocaleDateString('ru-RU');
-          const timeStr = now.toTimeString().slice(0, 5);
-          courseStatus.innerHTML = `${usdToRub.toFixed(2)} <small>(на ${dateStr}, обновлено: ${timeStr})</small>`;
-          calcBtn.disabled = false;
-          updatePriceBtn();
-        } else {
-          throw new Error('Нет RUB');
-        }
-      } catch (e) {
-        console.error(`Попытка ${retryCount + 1} неудачна:`, e.message);
-        if (retryCount < maxRetries - 1) {
-          setTimeout(() => loadCourse(retryCount + 1), 2000);
-          return;
-        }
-        // ПОЛНАЯ ОШИБКА — БЕЗ FALLBACK
-        usdToRub = null;
-        courseStatus.textContent = 'Ошибка API';
-        courseStatus.className = 'course-error';
-        calcBtn.disabled = true;
-      }
-    }
-
-    loadCourse();
-    setInterval(loadCourse, 300000);
-
-    async function fetchMoriPrice() {
-      try {
-        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=mori-coin&vs_currencies=usd,rub');
-        const data = await res.json();
-        const mori = data['mori-coin'] || data['mori_coin'];
-        if (mori) {
-          priceUSD = mori.usd || 0;
-          priceRUB = mori.rub || (mori.usd * usdToRub) || 0;
-          updatePriceBtn();
-        }
-      } catch (e) {
-        console.log('Coingecko:', e);
-      }
-    }
-
-    function updatePriceBtn() {
-      if (!usdToRub) return;
-
-      let displayPrice;
-      let decimals;
-
-      if (currentCurrency === 'USD') {
-        displayPrice = priceUSD;
-        decimals = 6;
-      } else {
-        displayPrice = priceUSD * usdToRub;
-        decimals = 2;
-      }
-
-      priceBtn.textContent = `Текущая: ${displayPrice ? displayPrice.toFixed(decimals) : '—'} ${currentCurrency === 'USD' ? '$' : '₽'}`;
-
-      if (!userHasEditedPrice && displayPrice) {
-        tokenPriceInput.value = displayPrice.toFixed(decimals);
-      }
-
-      priceBtn.onclick = () => {
-        if (displayPrice) {
-          tokenPriceInput.value = displayPrice.toFixed(decimals);
-          userHasEditedPrice = true;
-        }
-      };
-    }
-
-    fetchMoriPrice();
-    setInterval(fetchMoriPrice, 60000);
-
+    // === ВАЛЮТА (только в MORI) ===
     btnUSD.onclick = () => {
       if (currentCurrency === 'USD') return;
       currentCurrency = 'USD';
-      btnUSD.classList.add('active');
-      btnRUB.classList.remove('active');
+      btnUSD.classList.add('active'); btnRUB.classList.remove('active');
       updatePriceBtn();
     };
-
     btnRUB.onclick = () => {
       if (currentCurrency === 'RUB') return;
       currentCurrency = 'RUB';
-      btnRUB.classList.add('active');
-      btnUSD.classList.remove('active');
+      btnRUB.classList.add('active'); btnUSD.classList.remove('active');
       updatePriceBtn();
     };
 
+    // === КУРС USD/RUB ===
+    async function loadCourse(retry = 0) {
+      const max = 3;
+      courseStatus.textContent = retry ? `Попытка ${retry+1}/${max}...` : 'Загрузка...';
+      courseStatus.className = ''; calcBtn.disabled = true;
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 15000);
+        const r = await fetch('https://api.exchangerate-api.com/v4/latest/USD', { signal: ctrl.signal });
+        clearTimeout(t);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const d = await r.json();
+        if (d.rates?.RUB) {
+          usdToRub = parseFloat(d.rates.RUB);
+          const now = new Date();
+          courseStatus.innerHTML = `${usdToRub.toFixed(2)} <small>(на ${now.toLocaleDateString('ru-RU')}, ${now.toTimeString().slice(0,5)})</small>`;
+          calcBtn.disabled = false;
+          updatePriceBtn();
+        } else throw new Error('Нет RUB');
+      } catch (e) {
+        console.error(e);
+        if (retry < max-1) { setTimeout(() => loadCourse(retry+1), 2000); return; }
+        usdToRub = null; courseStatus.textContent = 'Ошибка API'; courseStatus.className = 'course-error';
+        calcBtn.disabled = true;
+      }
+    }
+    loadCourse(); setInterval(loadCourse, 300000);
+
+    // === ЦЕНА $MORI ===
+    async function fetchMoriPrice() {
+      try {
+        const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=mori-coin&vs_currencies=usd,rub');
+        const d = await r.json();
+        const m = d['mori-coin'] || d['mori_coin'];
+        if (m) { priceUSD = m.usd || 0; priceRUB = m.rub || (m.usd * usdToRub) || 0; updatePriceBtn(); }
+      } catch (e) { console.log('Coingecko:', e); }
+    }
+    fetchMoriPrice(); setInterval(fetchMoriPrice, 60000);
+
+    function updatePriceBtn() {
+      if (mode !== 'MORI' || !usdToRub) return;
+      const display = currentCurrency === 'USD' ? priceUSD : (priceUSD * usdToRub);
+      const dec = currentCurrency === 'USD' ? 6 : 2;
+      priceBtn.textContent = `Текущая: ${display ? display.toFixed(dec) : '-'} ${currentCurrency === 'USD' ? '$' : '₽'}`;
+      if (!userHasEditedPrice && display) tokenPriceInput.value = display.toFixed(dec);
+      priceBtn.onclick = () => {
+        if (display) { tokenPriceInput.value = display.toFixed(dec); userHasEditedPrice = true; }
+      };
+    }
+    tokenPriceInput.addEventListener('input', () => { userHasEditedPrice = true; });
+
+    // === РАСЧЁТ ПО КНОПКЕ ===
     calcBtn.onclick = () => {
-      if (!usdToRub) {
-        alert('Курс не загружен. Подождите или обновите страницу.');
-        return;
-      }
+      if (!usdToRub) { alert('Курс не загружен. Подождите или обновите страницу.'); return; }
+      const raw = tokenInput.value.replace(',', '.').trim();
+      const amount = parseFloat(raw) || 0;
+      if (amount <= 0) { alert('Введите корректное значение'); return; }
 
-      const amount = parseFloat(document.getElementById('tokenAmount').value.replace(',', '.')) || 0;
-      const inputPrice = parseFloat(tokenPriceInput.value.replace(',', '.'));
+      let totalUSD, totalRUB, moriFromXP = 0;
 
-      let priceInUSD;
-      if (currentCurrency === 'USD') {
-        priceInUSD = inputPrice || priceUSD;
+      if (mode === 'MORI') {
+        const priceInput = parseFloat(tokenPriceInput.value.replace(',', '.')) || priceUSD;
+        const priceInUSD = currentCurrency === 'USD' ? priceInput : (priceInput / usdToRub);
+        totalUSD = amount * priceInUSD;
       } else {
-        priceInUSD = (inputPrice || (priceUSD * usdToRub)) / usdToRub;
+        moriFromXP = amount / XP_PER_MORI;
+        totalUSD = moriFromXP * priceUSD;
       }
-
-      if (amount <= 0 || priceInUSD <= 0) {
-        alert('Введите корректные данные');
-        return;
-      }
-
-      const totalUSD = amount * priceInUSD;
-      const totalRUB = totalUSD * usdToRub;
+      totalRUB = totalUSD * usdToRub;
 
       const usdStr = totalUSD.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + ' $';
       const rubStr = totalRUB.toLocaleString('ru-RU', { maximumFractionDigits: 0 }) + ' ₽';
 
-      resultsBlock.style.display = 'block';
-      resultsBlock.style.opacity = 0;
-      setTimeout(() => resultsBlock.style.opacity = 1, 50);
+      resultsBlock.style.display = 'block'; resultsBlock.style.opacity = 0;
+      setTimeout(() => { resultsBlock.style.opacity = 1; }, 50);
 
-      if (currentCurrency === 'USD') {
-        resultPrimary.innerHTML = `<p>Стоимость в USD: <strong class="highlight">${usdStr}</strong></p>`;
+      if (mode === 'MORI') {
+        resultPrimary.innerHTML   = `<p>Стоимость в USD: <strong class="highlight">${usdStr}</strong></p>`;
         resultSecondary.innerHTML = `<p>Стоимость в RUB: <strong class="highlight">${rubStr}</strong></p>`;
+        resultTertiary.innerHTML  = '';
       } else {
-        resultPrimary.innerHTML = `<p>Стоимость в RUB: <strong class="highlight">${rubStr}</strong></p>`;
+        const moriStr = moriFromXP.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + ' $MORI';
+        resultPrimary.innerHTML   = `<p>Эквивалент $MORI: <strong class="highlight">${moriStr}</strong></p>`;
         resultSecondary.innerHTML = `<p>Стоимость в USD: <strong class="highlight">${usdStr}</strong></p>`;
+        resultTertiary.innerHTML  = `<p>Стоимость в RUB: <strong class="highlight">${rubStr}</strong></p>`;
       }
     };
   </script>
