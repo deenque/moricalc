@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
+<html lang="ru" style="--tg-viewport-height: 100vh; --tg-viewport-stable-height: 100vh;"><head>
   <!-- === МЕТАДАННЫЕ === -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>$MORI COIN Калькулятор</title>
   <!-- === TELEGRAM WEBAPP === -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- === ИКОНКИ И ФАВИКОН === -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="icon" href="https://moristake.in/images/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" href="https://moristake.in/images/favicon.ico" type="image/x-icon">
   <!-- === ШРИФТ === -->
   <style>
     @font-face {
@@ -117,41 +115,44 @@
   <div class="calculator">
     <h2>Калькулятор $MORI</h2>
     <p class="subtitle">(с прогнозом дохода)</p>
+
     <div class="currency-toggle">
-      <button id="btnUSD" class="active">
+      <button id="btnUSD" class="">
         <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USD"> USD
       </button>
-      <button id="btnRUB">
+      <button id="btnRUB" class="active">
         <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="RUB"> RUB
       </button>
     </div>
+
     <div class="input-group">
       <label for="tokenAmount">Количество ваших токенов:</label>
       <input type="text" id="tokenAmount" class="token-input" placeholder="Например: 1000">
     </div>
+
     <div class="input-group">
       <label for="tokenPrice">Желаемая цена $MORI</label>
       <div class="price-row">
         <input type="text" step="0.001" id="tokenPrice" class="price-input" placeholder="0,00">
-        <div class="price-btn" id="priceBtn">Текущая цена</div>
+        <div class="price-btn" id="priceBtn">Текущая: 2.34 ₽</div>
       </div>
       <div class="comment">Цена 1 MORI в выбранной валюте</div>
       <p style="font-size:12px; color:rgba(255,255,255,0.6); margin:4px 0 0; text-align:center; line-height:1.2;">
         (выберите валюту, нажав на кнопку RUB или USD)
       </p>
     </div>
-    <button class="btn" id="calcBtn" disabled>Рассчитать</button>
+
+    <button class="btn" id="calcBtn">Рассчитать</button>
+
     <div class="course-info" id="courseInfo">
-      Курс USD/RUB: <span id="courseStatus">Загрузка...</span>
+      Курс USD/RUB: <span id="courseStatus" class="">80.92 <small>(на 10.11.2025, обновлено: 15:34)</small></span>
     </div>
-    <div class="results" id="resultsBlock">
-      <div id="resultPrimary"></div>
-      <div id="resultSecondary"></div>
+
+    <div class="results" id="resultsBlock" style="display: block; opacity: 1;">
+      <div id="resultPrimary"><p>Стоимость в RUB: <strong class="highlight">758&nbsp;918 ₽</strong></p></div>
+      <div id="resultSecondary"><p>Стоимость в USD: <strong class="highlight">9&nbsp;378,62 $</strong></p></div>
     </div>
   </div>
-
-  <!-- === MONEY.JS + ДАННЫЕ ЦБ РФ === -->
-  <script src="https://www.cbr-xml-daily.ru/money.js"></script>
 
   <script>
     Telegram.WebApp.ready();
@@ -177,44 +178,50 @@
       userHasEditedPrice = true;
     });
 
-   // === КУРС ИЗ ЦБ РФ (money.js) ===
-function updateCourseFromCBR() {
-  if (typeof fx === 'undefined' || !fx.rates || !fx.rates.USD) {
-    courseStatus.textContent = 'Ошибка загрузки курса';
-    courseStatus.className = 'course-error';
-    calcBtn.disabled = true;
-    setTimeout(updateCourseFromCBR, 3000);
-    return;
-  }
+    // === ЗАГРУЗКА КУРСА БЕЗ FALLBACK ===
+    async function loadCourse(retryCount = 0) {
+      const maxRetries = 3;
+      courseStatus.textContent = retryCount > 0 ? `Попытка ${retryCount + 1}/${maxRetries}...` : 'Загрузка...';
+      courseStatus.className = '';
+      calcBtn.disabled = true;
 
-  usdToRub = 1 / fx.rates.USD; // КЛЮЧЕВАЯ СТРОКА
-  const date = new Date().toLocaleDateString('ru-RU');
-  courseStatus.innerHTML = `${usdToRub.toFixed(2)} <small>(ЦБ РФ, ${date})</small>`;
-  courseStatus.className = '';
-  calcBtn.disabled = false;
-  updatePriceBtn();
-}
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 15000);
+        const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD', { signal: controller.signal });
+        clearTimeout(timeout);
 
-// Запуск
-if (typeof fx !== 'undefined' && fx.rates) {
-  updateCourseFromCBR();
-} else {
-  window.addEventListener('load', () => setTimeout(updateCourseFromCBR, 500));
-}
-    // Ждём загрузки money.js
-    if (typeof fx !== 'undefined' && fx.rates) {
-      updateCourseFromCBR();
-    } else {
-      // Если скрипт ещё не загрузился
-      window.addEventListener('load', () => {
-        setTimeout(updateCourseFromCBR, 500);
-      });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        if (data.rates?.RUB) {
+          usdToRub = parseFloat(data.rates.RUB);
+          const now = new Date();
+          const dateStr = now.toLocaleDateString('ru-RU');
+          const timeStr = now.toTimeString().slice(0, 5);
+          courseStatus.innerHTML = `${usdToRub.toFixed(2)} <small>(на ${dateStr}, обновлено: ${timeStr})</small>`;
+          calcBtn.disabled = false;
+          updatePriceBtn();
+        } else {
+          throw new Error('Нет RUB');
+        }
+      } catch (e) {
+        console.error(`Попытка ${retryCount + 1} неудачна:`, e.message);
+        if (retryCount < maxRetries - 1) {
+          setTimeout(() => loadCourse(retryCount + 1), 2000);
+          return;
+        }
+        // ПОЛНАЯ ОШИБКА — БЕЗ FALLBACK
+        usdToRub = null;
+        courseStatus.textContent = 'Ошибка API';
+        courseStatus.className = 'course-error';
+        calcBtn.disabled = true;
+      }
     }
 
-    // Обновление раз в сутки (можно оставить, но не обязательно)
-    setInterval(updateCourseFromCBR, 86400000);
+    loadCourse();
+    setInterval(loadCourse, 300000);
 
-    // === ЦЕНА $MORI (оставляем Jupiter или CoinGecko — на твой выбор) ===
     async function fetchMoriPrice() {
       try {
         const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=mori-coin&vs_currencies=usd,rub');
@@ -232,8 +239,10 @@ if (typeof fx !== 'undefined' && fx.rates) {
 
     function updatePriceBtn() {
       if (!usdToRub) return;
+
       let displayPrice;
       let decimals;
+
       if (currentCurrency === 'USD') {
         displayPrice = priceUSD;
         decimals = 6;
@@ -241,10 +250,13 @@ if (typeof fx !== 'undefined' && fx.rates) {
         displayPrice = priceUSD * usdToRub;
         decimals = 2;
       }
+
       priceBtn.textContent = `Текущая: ${displayPrice ? displayPrice.toFixed(decimals) : '—'} ${currentCurrency === 'USD' ? '$' : '₽'}`;
+
       if (!userHasEditedPrice && displayPrice) {
         tokenPriceInput.value = displayPrice.toFixed(decimals);
       }
+
       priceBtn.onclick = () => {
         if (displayPrice) {
           tokenPriceInput.value = displayPrice.toFixed(decimals);
@@ -256,7 +268,6 @@ if (typeof fx !== 'undefined' && fx.rates) {
     fetchMoriPrice();
     setInterval(fetchMoriPrice, 60000);
 
-    // === ПЕРЕКЛЮЧЕНИЕ ВАЛЮТ ===
     btnUSD.onclick = () => {
       if (currentCurrency === 'USD') return;
       currentCurrency = 'USD';
@@ -264,6 +275,7 @@ if (typeof fx !== 'undefined' && fx.rates) {
       btnRUB.classList.remove('active');
       updatePriceBtn();
     };
+
     btnRUB.onclick = () => {
       if (currentCurrency === 'RUB') return;
       currentCurrency = 'RUB';
@@ -272,26 +284,30 @@ if (typeof fx !== 'undefined' && fx.rates) {
       updatePriceBtn();
     };
 
-    // === РАСЧЁТ ===
     calcBtn.onclick = () => {
       if (!usdToRub) {
         alert('Курс не загружен. Подождите или обновите страницу.');
         return;
       }
+
       const amount = parseFloat(document.getElementById('tokenAmount').value.replace(',', '.')) || 0;
       const inputPrice = parseFloat(tokenPriceInput.value.replace(',', '.'));
+
       let priceInUSD;
       if (currentCurrency === 'USD') {
         priceInUSD = inputPrice || priceUSD;
       } else {
         priceInUSD = (inputPrice || (priceUSD * usdToRub)) / usdToRub;
       }
+
       if (amount <= 0 || priceInUSD <= 0) {
         alert('Введите корректные данные');
         return;
       }
+
       const totalUSD = amount * priceInUSD;
       const totalRUB = totalUSD * usdToRub;
+
       const usdStr = totalUSD.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + ' $';
       const rubStr = totalRUB.toLocaleString('ru-RU', { maximumFractionDigits: 0 }) + ' ₽';
 
@@ -308,5 +324,5 @@ if (typeof fx !== 'undefined' && fx.rates) {
       }
     };
   </script>
-</body>
-</html>
+
+</body></html>
