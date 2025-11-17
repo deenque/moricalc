@@ -14,12 +14,9 @@
       font-display: swap;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
-    
-    /* ГЛАВНОЕ — ПРИНУДИТЕЛЬНО ВЕЗДЕ ОДИН ШРИФТ */
     html, body, input, button, textarea, select, p, span, div, h1, h2, h3, h4, h5, h6 {
       font-family: 'TT Firs Neue', system-ui, -apple-system, sans-serif !important;
     }
-
     html,body{
       width:100%;height:100%;overflow:hidden;
       background:radial-gradient(circle at 50% 50%,#1b1a12 0%,#000 100%);
@@ -38,7 +35,7 @@
     .page {
       backdrop-filter:blur(20px) saturate(180%);
       background:rgba(255,255,255,.08);
-      padding:24px 20px 100px 20px;
+      padding:44px 20px 100px 20px; /* Увеличенный отступ сверху — ничего не перекрывает Telegram */
       flex:1; overflow-y:auto;
       display:none;
     }
@@ -99,7 +96,6 @@
     }
     .nav-item:active { transform: scale(0.95); }
 
-    /* Стили для калькулятора */
     h2{text-align:center;margin-bottom:4px;color:#FFD500;font-weight:600;font-size:20px;line-height:1.2;}
     .currency-toggle {
       display:flex;
@@ -112,20 +108,51 @@
       border:1px solid rgba(255,255,255,.1);color:#fff;font-size:13px;transition:all .3s;cursor:pointer;}
     .currency-toggle button.active {color:#FFD500;background:rgba(255,213,0,.15);border-color:#FFD500;}
     .currency-toggle button img {width:18px;height:12px;border-radius:2px;}
+
+    /* СИММЕТРИЧНАЯ РАЗМЕТКА ПОД КНОПКАМИ USD/RUB */
+    .price-input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .token-price-input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      text-align: center;
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      min-height: 48px;
+    }
+    .price-btn {
+      width: 100%;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 12px;
+      padding: 12px 10px;
+      color: #FFD500;
+      font-size: 12px;
+      cursor: pointer;
+      transition: .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .price-btn:hover,.price-btn:active {background:rgba(255,255,255,.2);}
+
     .input-group {margin-bottom:16px;}
     label {font-size:13px;color:rgba(255,255,255,.7);display:block;margin-bottom:6px;}
     .mode-toggle {display:flex;gap:8px;margin-top:8px;margin-bottom:12px;}
     .mode-toggle button {flex:1;background:rgba(255,255,255,.07);border-radius:12px;padding:8px 0;
       border:1px solid rgba(255,255,255,.1);color:#fff;font-size:13px;transition:all .3s;cursor:pointer;}
     .mode-toggle button.active {color:#FFD500;font-weight:400;background:rgba(255,213,0,.15);border-color:#FFD500;}
-    .token-input,.price-input,.buy-input {width:100%;padding:12px 14px;border-radius:12px;border:none;outline:none;
+    .token-input,.buy-input {width:100%;padding:12px 14px;border-radius:12px;border:none;outline:none;
       font-size:14px;text-align:center;background:rgba(255,255,255,.1);color:#fff;min-height:48px;}
-    .token-input::placeholder,.price-input::placeholder,.buy-input::placeholder {color:rgba(255,255,255,.4);}
-    .price-input {width:130px;padding:12px 8px;flex-shrink:0;}
-    .price-row {display:flex;align-items:center;gap:8px;}
-    .price-btn {text-align:center;flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);
-      border-radius:10px;padding:8px 10px;color:#FFD500;font-size:12px;white-space:nowrap;cursor:pointer;transition:.3s;}
-    .price-btn:hover,.price-btn:active {background:rgba(255,255,255,.2);}
+    .token-input::placeholder,.buy-input::placeholder {color:rgba(255,255,255,.4);}
     .comment {text-align:center;font-size:12px;color:#ffd500;margin-top:18px;}
     .btn {width:100%;background:linear-gradient(135deg,#FFD500,#BFA100);border:none;border-radius:12px;padding:14px;font-size:16px;
       color:#000;font-weight:600;cursor:pointer;transition:all .3s;min-height:52px;margin-top:8px;}
@@ -139,7 +166,6 @@
     .course-error {color:#ff6b6b;}
     .xp-info {font-size:12px;color:#FFD500;text-align:center;margin-top:8px;font-weight:500;display:none;}
 
-    /* Стили для страницы "Главная" (покупка) */
     .buy-currency-toggle {display:flex;justify-content:center;gap:8px;margin:12px 0 18px 0;}
     .buy-currency-toggle button {flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
       background:rgba(255,255,255,.07);border-radius:12px;padding:8px 0;
@@ -148,17 +174,13 @@
     .buy-currency-toggle button img {width:18px;height:12px;border-radius:2px;}
     .buy-results {margin-top:16px;text-align:center;}
     .buy-results p {margin:4px 0;font-size:15px;line-height:1.3;color:rgba(255,255,255,0.7);}
-
     .buy-action-row {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-top: 8px;
     }
-    .buy-action-row .btn {
-      flex: 1;
-      margin-top: 0;
-    }
+    .buy-action-row .btn {flex: 1;margin-top: 0;}
     .buy-now-btn {
       flex: 1;
       background: linear-gradient(135deg, #FFD500, #BFA100);
@@ -181,147 +203,40 @@
       transform: translateY(-1px);
       box-shadow: 0 0 20px rgba(255, 213, 0, 0.4);
     }
-    .buy-now-btn i {
-      margin-right: 6px;
-    }
+    .buy-now-btn i {margin-right: 6px;}
 
-    /* Страница "Цена" с графиком */
-    .price-page-content {
-      text-align: center;
-    }
-    .price-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .price-header img {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-    }
-    .price-header h3 {
-      font-size: 18px;
-      color: #FFD500;
-      margin: 0;
-    }
-    .current-price-big {
-      font-size: 36px;
-      font-weight: 700;
-      margin: 8px 0;
+    .price-page-content {text-align: center;}
+    .price-header {display: flex;align-items: center;justify-content: center;gap: 12px;margin-bottom: 16px;}
+    .price-header img {width: 48px;height: 48px;border-radius: 50%;}
+    .price-header h3 {font-size: 18px;color: #FFD500;margin: 0;}
+    .current-price-big {font-size: 36px;font-weight: 700;margin: 8px 0;
       background: linear-gradient(90deg, #FFD500, #FFB800);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .price-change {
-      font-size: 14px;
-      font-weight: 600;
-      margin: 4px 0;
-    }
+      -webkit-background-clip: text;-webkit-text-fill-color: transparent;}
+    .price-change {font-size: 14px;font-weight: 600;margin: 4px 0;}
     .price-change.positive { color: #28a745; }
     .price-change.negative { color: #dc3545; }
-    .price-update {
-      font-size: 12px;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 16px;
-    }
-    .price-stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin: 20px 0 12px 0;
-    }
-    .price-stat-item {
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      padding: 12px;
-      text-align: center;
-    }
-    .price-stat-label {
-      font-size: 12px;
-      color: rgba(255,255,255,0.6);
-    }
-    .price-stat-value {
-      font-size: 16px;
-      font-weight: 600;
-      color: #FFD500;
-      margin-top: 4px;
-      line-height: 1.3;
-    }
-    .price-stat-value small {
-      font-size: 12px;
-      opacity: 0.9;
-      display: block;
-      color: #fff;
-      margin-top: 2px;
-    }
-    .chart-container {
-      position: relative;
-      height: 220px;
-      margin: 8px 0 12px 0;
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .chart-loading {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      color: rgba(255,255,255,0.6);
-      font-size: 14px;
-    }
+    .price-update {font-size: 12px;color: rgba(255,255,255,0.6);margin-bottom: 16px;}
+    .price-stats-grid {display: grid;grid-template-columns: 1fr 1fr;gap: 12px;margin: 20px 0 12px 0;}
+    .price-stat-item {background: rgba(255,255,255,0.05);border-radius: 12px;padding: 12px;text-align: center;}
+    .price-stat-label {font-size: 12px;color: rgba(255,255,255,0.6);}
+    .price-stat-value {font-size: 16px;font-weight: 600;color: #FFD500;margin-top: 4px;line-height: 1.3;}
+    .price-stat-value small {font-size: 12px;opacity: 0.9;display: block;color: #fff;margin-top: 2px;}
+    .chart-container {position: relative;height: 220px;margin: 8px 0 12px 0;background: rgba(255,255,255,0.05);border-radius: 12px;overflow: hidden;}
+    .chart-loading {position: absolute;top: 50%; left: 50%;transform: translate(-50%, -50%);color: rgba(255,255,255,0.6);font-size: 14px;}
+    .price-links {display: flex;justify-content: center;gap: 16px;margin: 20px 0;}
+    .price-link {color: #FFD500;text-decoration: none;font-size: 14px;display: flex;align-items: center;gap: 6px;}
+    .price-link i {font-size: 18px;}
 
-    .price-links {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      margin: 20px 0;
-    }
-    .price-link {
-      color: #FFD500;
-      text-decoration: none;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .price-link i {
-      font-size: 18px;
-    }
-
-    /* Страница "Инфо" */
-    .info-page-content {
-      text-align: center;
-    }
-    .info-block {
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      padding: 16px;
-      margin: 16px 0;
-      text-align: left;
-    }
-    .info-block h3 {
-      color: #FFD500;
-      font-size: 16px;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-    .info-block p {
-      font-size: 13px;
-      line-height: 1.4;
-      color: rgba(255,255,255,0.8);
-    }
-    .info-link {
-      color: #FFD500;
-      text-decoration: none;
-    }
+    .info-page-content {text-align: center;}
+    .info-block {background: rgba(255,255,255,0.05);border-radius: 12px;padding: 16px;margin: 16px 0;text-align: left;}
+    .info-block h3 {color: #FFD500;font-size: 16px;margin-bottom: 8px;text-align: center;}
+    .info-block p {font-size: 13px;line-height: 1.4;color: rgba(255,255,255,0.8);}
+    .info-link {color: #FFD500;text-decoration: none;}
   </style>
 </head>
 <body>
   <div class="app-container">
-
-    <!-- Страница Калькулятор -->
+    <!-- Калькулятор -->
     <div class="page calculator-page active" id="calculatorPage">
       <h2>Прогноз дохода $MORI</h2>
       <br>
@@ -333,22 +248,23 @@
         </div>
         <input type="text" id="tokenInput" class="token-input" placeholder="Например: 1000">
       </div>
-
-      <div class="currency-toggle" id="currencyToggle">
-        <button id="btnUSD" class="active">
-          <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USD"> USD
-        </button>
-        <button id="btnRUB">
-          <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="RUB"> RUB
-        </button>
-      </div>
-
+  
       <div class="input-group" id="priceGroup">
-        <label for="tokenPrice">Желаемая цена $MORI:</label>
-        <div class="price-row">
-          <input type="text" step="0.001" id="tokenPrice" class="price-input" placeholder="0,00">
+        <label>Желаемая цена $MORI:</label>
+        <div class="currency-toggle" id="currencyToggle">
+          <button id="btnUSD" class="active">
+            <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USD"> USD
+          </button>
+          <button id="btnRUB">
+            <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="RUB"> RUB
+          </button>
+        </div>
+
+        <div class="price-input-row">
+          <input type="text" step="0.001" id="tokenPrice" class="token-price-input" placeholder="0,00">
           <div class="price-btn" id="priceBtn">Текущая цена</div>
         </div>
+
         <div class="comment">Цена 1 MORI в выбранной валюте</div>
         <p style="font-size:12px;color:rgba(255,255,255,0.6);margin:4px 0 0;text-align:center;line-height:1.2;">
           (выберите валюту, нажав на кнопку RUB или USD)
@@ -366,7 +282,7 @@
       </div>
     </div>
 
-    <!-- Страница "Главная" (покупка) -->
+    <!-- Главная (покупка) -->
     <div class="page buy-page" id="buyPage">
       <h2>Купить $MORI</h2>
       <br>
@@ -374,7 +290,6 @@
         <label for="buyInput">Хочу купить на:</label>
         <input type="text" id="buyInput" class="buy-input" placeholder="Например: 1000">
       </div>
-
       <div class="buy-currency-toggle" id="buyCurrencyToggle">
         <button id="buyBtnRUB" class="active">
           <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="RUB"> RUB
@@ -383,25 +298,22 @@
           <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USD"> USD
         </button>
       </div>
-
       <div class="buy-action-row">
         <button class="btn" id="buyCalcBtn">Рассчитать</button>
         <a href="https://t.me/MoriForum/1321532/1321535" class="buy-now-btn" target="_blank">
           <i class="fas fa-shopping-cart"></i> Купить
         </a>
       </div>
-
       <div class="course-info" id="buyCourseInfo">
         Курс USD/RUB: <span id="buyCourseStatus">Загрузка...</span>
       </div>
-
       <div class="buy-results" id="buyResultsBlock" style="display:none;">
         <div id="buyResultMori"></div>
         <div id="buyResultFiat"></div>
       </div>
     </div>
 
-    <!-- Страница "Цена" -->
+    <!-- Цена -->
     <div class="page price-page" id="pricePage">
       <h2>Текущая цена $MORI</h2>
       <br>
@@ -413,77 +325,37 @@
         <div class="current-price-big" id="currentPriceBig">Загрузка...</div>
         <div class="price-change" id="priceChange24h">-</div>
         <div class="price-update" id="priceUpdateTime"></div>
-
         <div class="price-stats-grid">
-          <div class="price-stat-item">
-            <div class="price-stat-label">Рыночная капитализация</div>
-            <div class="price-stat-value" id="marketCap">-</div>
-          </div>
-          <div class="price-stat-item">
-            <div class="price-stat-label">Объём торгов (24ч)</div>
-            <div class="price-stat-value" id="volume24h">-</div>
-          </div>
-          <div class="price-stat-item">
-            <div class="price-stat-label">Циркулирующий объём</div>
-            <div class="price-stat-value" id="circulatingSupply">-</div>
-          </div>
-          <div class="price-stat-item">
-            <div class="price-stat-label">Максимальный объём</div>
-            <div class="price-stat-value" id="totalSupply">-</div>
-          </div>
-          <div class="price-stat-item">
-            <div class="price-stat-label">ATH (максимум)</div>
-            <div class="price-stat-value" id="ath">-</div>
-          </div>
-          <div class="price-stat-item">
-            <div class="price-stat-label">ATL (минимум)</div>
-            <div class="price-stat-value" id="atl">-</div>
-          </div>
+          <div class="price-stat-item"><div class="price-stat-label">Рыночная капитализация</div><div class="price-stat-value" id="marketCap">-</div></div>
+          <div class="price-stat-item"><div class="price-stat-label">Объём торгов (24ч)</div><div class="price-stat-value" id="volume24h">-</div></div>
+          <div class="price-stat-item"><div class="price-stat-label">Циркулирующий объём</div><div class="price-stat-value" id="circulatingSupply">-</div></div>
+          <div class="price-stat-item"><div class="price-stat-label">Максимальный объём</div><div class="price-stat-value" id="totalSupply">-</div></div>
+          <div class="price-stat-item"><div class="price-stat-label">ATH (максимум)</div><div class="price-stat-value" id="ath">-</div></div>
+          <div class="price-stat-item"><div class="price-stat-label">ATL (минимум)</div><div class="price-stat-value" id="atl">-</div></div>
         </div>
-
         <div class="chart-container" id="chartContainer">
           <div class="chart-loading" id="chartLoading">Загрузка графика...</div>
         </div>
-
         <div class="price-links">
-          <a href="https://www.coingecko.com/en/coins/mori-coin" class="price-link" target="_blank">
-            <i class="fab fa-coingecko"></i> CoinGecko
-          </a>
-          <a id="websiteLink" href="#" class="price-link" target="_blank" style="display:none;">
-            <i class="fas fa-globe"></i> Сайт
-          </a>
-          <a id="twitterLink" href="#" class="price-link" target="_blank" style="display:none;">
-            <i class="fab fa-twitter"></i> Twitter
-          </a>
+          <a href="https://www.coingecko.com/en/coins/mori-coin" class="price-link" target="_blank"><i class="fab fa-coingecko"></i> CoinGecko</a>
+          <a id="websiteLink" href="#" class="price-link" target="_blank" style="display:none;"><i class="fas fa-globe"></i> Сайт</a>
+          <a id="twitterLink" href="#" class="price-link" target="_blank" style="display:none;"><i class="fab fa-twitter"></i> Twitter</a>
         </div>
-
         <p style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:20px;">
           График: свечи за 30 дней (TradingView). Данные обновляются автоматически.
         </p>
       </div>
     </div>
 
-    <!-- Страница "Инфо" -->
+    <!-- Инфо -->
     <div class="page info-page" id="infoPage">
       <h2>Информация о $MORI</h2>
       <br>
       <div class="info-page-content">
-        <div class="info-block">
-          <h3>Что такое $MORI?</h3>
-          <p>$MORI — мем-коин, вдохновлённый Профессором Мориарти, YouTube-звездой с 3,2 млн подписчиков.</p>
-        </div>
-        <div class="info-block">
-          <h3>Где купить?</h3>
-          <p>Перейдите в раздел <strong>Главная</strong>, выбрав желаемую валюту и расчитайте сумму, далее нажмите <strong>Купить</strong>, затем следуйте инструкции. <a href="https://t.me/MoriForum" class="info-link" target="_blank">@MoriForum</a>.</p>
-        </div>
-        <div class="info-block">
-          <h3>Курс XP</h3>
-          <p>1 $MORI = 50 XP (фиксированный курс для конвертации в калькуляторе).</p>
-        </div>
-        <div class="info-block">
-          <h3>Поддержка</h3>
-          <p>Вопросы? Пишите в <a href="https://t.me/MoriForum" class="info-link" target="_blank">Telegram-чат</a>.</p>
-        </div>
+        <div class="info-block"><h3>Что такое $MORI?</h3><p>$MORI — это токен экосистемы Mori Stake. Используется для стейкинга, наград и управления.</p></div>
+       <p>Перейдите в раздел <strong>Главная</strong>, выбрав желаемую валюту и расчитайте сумму, далее нажмите <strong>Купить</strong>, затем следуйте инструкции. <a href="https://t.me/MoriForum" class="info-link" target="_blank">@MoriForum</a>.</p>
+        <div class="info-block"><h3>Курс XP</h3><p>1 $MORI = 50 XP (актуальный курс для конвертации в калькуляторе).</p></div>
+        <div class="info-block"><h3>Поддержка</h3><p>Вопросы? Пишите в <a href="https://t.me/MoriForum" class="info-link" target="_blank">Telegram-чат</a>.</p></div>
       </div>
     </div>
 
@@ -500,15 +372,13 @@
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
 
-    // === Переменные ===
     const TOKEN_MINT = '8ZHE4ow1a2jjxuoMfyExuNamQNALv5ekZhsBn5nMDf5e';
     let coinData = {};
     let usdToRub = null;
     let userHasEditedPrice = false;
     let lastPriceUpdate = null;
-    let tvWidget = null; // TradingView widget
+    let tvWidget = null;
 
-    // === Навигация ===
     const navItems = document.querySelectorAll('.nav-item[data-page]');
     const pages = document.querySelectorAll('.page');
     navItems.forEach(item => {
@@ -518,7 +388,6 @@
         item.classList.add('active');
         pages.forEach(page => page.classList.remove('active'));
         document.getElementById(target).classList.add('active');
-
         if (target === 'pricePage') {
           initTradingViewChart();
           updatePricePage(coinData.market_data || {}, coinData.image?.large, coinData.links);
@@ -526,13 +395,11 @@
       });
     });
 
-    // === TradingView График ===
     function initTradingViewChart() {
       const container = document.getElementById('chartContainer');
       const loadingEl = document.getElementById('chartLoading');
       if (loadingEl) loadingEl.style.display = 'block';
-      if (tvWidget) return; // Уже инициализирован
-
+      if (tvWidget) return;
       const script = document.createElement('script');
       script.src = 'https://s3.tradingview.com/tv.js';
       script.onload = () => {
@@ -557,7 +424,6 @@
       document.head.appendChild(script);
     }
 
-    // === Курс USD/RUB ===
     async function loadCourse(retry = 0) {
       const max = 3;
       const statusElements = [document.getElementById('courseStatus'), document.getElementById('buyCourseStatus')];
@@ -585,7 +451,6 @@
     }
     loadCourse(); setInterval(loadCourse, 300000);
 
-    // === Данные CoinGecko ===
     async function fetchCoinData() {
       try {
         const ctrl = new AbortController();
@@ -602,13 +467,11 @@
     }
     fetchCoinData(); setInterval(fetchCoinData, 60000);
 
-    // === Обновление цен ===
     function updateAllPrices() {
       if (Object.keys(coinData).length === 0) return;
       const market = coinData.market_data || {};
       const priceUSD = market.current_price?.usd || 0;
       const priceRUB = market.current_price?.rub || (priceUSD * (usdToRub || 0));
-
       updateCalcPriceBtn(priceUSD, priceRUB);
       updatePricePage(market, coinData.image?.large, coinData.links);
     }
@@ -626,8 +489,7 @@
         }
         priceBtnEl.onclick = () => {
           if (display) {
-            const tokenPriceInput = document.getElementById('tokenPrice');
-            if (tokenPriceInput) tokenPriceInput.value = display.toFixed(dec);
+            document.getElementById('tokenPrice').value = display.toFixed(dec);
             userHasEditedPrice = true;
           }
         };
@@ -635,99 +497,65 @@
     }
 
     function updatePricePage(market, logoUrl, links) {
-      const logoEl = document.getElementById('coinLogo');
-      if (logoUrl) { logoEl.src = logoUrl; logoEl.style.display = 'block'; }
-
+      if (logoUrl) { document.getElementById('coinLogo').src = logoUrl; document.getElementById('coinLogo').style.display = 'block'; }
       const priceUSD = market.current_price?.usd || 0;
-      const currentPriceEl = document.getElementById('currentPriceBig');
-      if (currentPriceEl) currentPriceEl.textContent = `$${priceUSD.toFixed(6)}`;
-
+      document.getElementById('currentPriceBig').textContent = `$${priceUSD.toFixed(6)}`;
       const change24h = market.price_change_percentage_24h || 0;
       const changeEl = document.getElementById('priceChange24h');
-      if (changeEl) {
-        changeEl.textContent = `${change24h > 0 ? '+' : ''}${change24h.toFixed(2)}% (24ч)`;
-        changeEl.className = 'price-change ' + (change24h > 0 ? 'positive' : change24h < 0 ? 'negative' : '');
-      }
-
-      if (lastPriceUpdate) {
-        const updateEl = document.getElementById('priceUpdateTime');
-        if (updateEl) updateEl.textContent = `Обновлено: ${lastPriceUpdate.toLocaleTimeString('ru-RU')}`;
-      }
+      changeEl.textContent = `${change24h > 0 ? '+' : ''}${change24h.toFixed(2)}% (24ч)`;
+      changeEl.className = 'price-change ' + (change24h > 0 ? 'positive' : change24h < 0 ? 'negative' : '');
+      if (lastPriceUpdate) document.getElementById('priceUpdateTime').textContent = `Обновлено: ${lastPriceUpdate.toLocaleTimeString('ru-RU')}`;
 
       const formatNumber = (num, decimals = 0) => num ? num.toLocaleString('ru-RU', { maximumFractionDigits: decimals }) : '-';
       const formatUSD = (num) => num ? `$${formatNumber(num, 0)}` : '-';
+      document.getElementById('marketCap').textContent = formatUSD(market.market_cap?.usd);
+      document.getElementById('volume24h').textContent = formatUSD(market.total_volume?.usd);
+      document.getElementById('circulatingSupply').textContent = formatNumber(market.circulating_supply, 0) + ' $MORI';
+      document.getElementById('totalSupply').textContent = formatNumber(market.total_supply, 0) + ' $MORI';
 
-      const marketCapEl = document.getElementById('marketCap');
-      if (marketCapEl) marketCapEl.textContent = formatUSD(market.market_cap?.usd);
-      const volumeEl = document.getElementById('volume24h');
-      if (volumeEl) volumeEl.textContent = formatUSD(market.total_volume?.usd);
-      const circEl = document.getElementById('circulatingSupply');
-      if (circEl) circEl.textContent = formatNumber(market.circulating_supply, 0) + ' $MORI';
-      const totalEl = document.getElementById('totalSupply');
-      if (totalEl) totalEl.textContent = formatNumber(market.total_supply, 0) + ' $MORI';
-
-      // ATH/ATL с рублями (органично, с 2 decimals)
       const athUSD = market.ath?.usd || 0;
       const atlUSD = market.atl?.usd || 0;
-      const athRubValue = usdToRub ? (athUSD * usdToRub) : 0;
-      const atlRubValue = usdToRub ? (atlUSD * usdToRub) : 0;
-      const athRubFormatted = usdToRub ? athRubValue.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₽' : '- ₽';
-      const atlRubFormatted = usdToRub ? atlRubValue.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₽' : '- ₽';
-
-      const athEl = document.getElementById('ath');
-      if (athEl) athEl.innerHTML = `$${athUSD.toFixed(6)}<small>${athRubFormatted}</small>`;
-      const atlEl = document.getElementById('atl');
-      if (atlEl) atlEl.innerHTML = `$${atlUSD.toFixed(6)}<small>${atlRubFormatted}</small>`;
+      const athRub = usdToRub ? (athUSD * usdToRub).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₽' : '- ₽';
+      const atlRub = usdToRub ? (atlUSD * usdToRub).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₽' : '- ₽';
+      document.getElementById('ath').innerHTML = `$${athUSD.toFixed(6)}<small>${athRub}</small>`;
+      document.getElementById('atl').innerHTML = `$${atlUSD.toFixed(6)}<small>${atlRub}</small>`;
 
       const websiteEl = document.getElementById('websiteLink');
-      if (links?.homepage?.[0]) { 
-        websiteEl.href = links.homepage[0]; 
-        websiteEl.style.display = 'flex'; 
-      } else { 
-        websiteEl.style.display = 'none'; 
-      }
-
+      if (links?.homepage?.[0]) { websiteEl.href = links.homepage[0]; websiteEl.style.display = 'flex'; } else websiteEl.style.display = 'none';
       const twitterEl = document.getElementById('twitterLink');
-      if (links?.twitter_screen_name) { 
-        twitterEl.href = `https://twitter.com/${links.twitter_screen_name}`; 
-        twitterEl.style.display = 'flex'; 
-      } else { 
-        twitterEl.style.display = 'none'; 
-      }
+      if (links?.twitter_screen_name) { twitterEl.href = `https://twitter.com/${links.twitter_screen_name}`; twitterEl.style.display = 'flex'; } else twitterEl.style.display = 'none';
     }
 
-    // === Калькулятор ===
     const btnMORI = document.getElementById('btnMORI');
     const btnXP = document.getElementById('btnXP');
     const btnUSD = document.getElementById('btnUSD');
     const btnRUB = document.getElementById('btnRUB');
-    const currencyToggle = document.getElementById('currencyToggle');
-    const priceGroup = document.getElementById('priceGroup');
-    const xpInfo = document.getElementById('xpInfo');
-    const inputLabel = document.getElementById('inputLabel');
     const tokenInput = document.getElementById('tokenInput');
     const tokenPriceInput = document.getElementById('tokenPrice');
-    const priceBtn = document.getElementById('priceBtn');
     const calcBtn = document.getElementById('calcBtn');
     const resultsBlock = document.getElementById('resultsBlock');
     const resultPrimary = document.getElementById('resultPrimary');
     const resultSecondary = document.getElementById('resultSecondary');
     const resultTertiary = document.getElementById('resultTertiary');
+    const xpInfo = document.getElementById('xpInfo');
+    const priceGroup = document.getElementById('priceGroup');
+    const currencyToggle = document.getElementById('currencyToggle');
+    const inputLabel = document.getElementById('inputLabel');
+
     let mode = 'MORI';
     let currentCurrency = 'USD';
     const XP_PER_MORI = 50;
 
-    if (btnMORI) btnMORI.onclick = () => { if (mode === 'MORI') return; mode = 'MORI'; btnMORI.classList.add('active'); btnXP.classList.remove('active');
-      if (currencyToggle) currencyToggle.style.display = 'flex'; if (priceGroup) priceGroup.style.display = 'block'; if (xpInfo) xpInfo.style.display = 'none';
-      if (inputLabel) inputLabel.textContent = 'Количество ваших токенов:'; tokenInput.placeholder = 'Например: 1000'; if (resultsBlock) resultsBlock.style.display = 'none'; };
-    if (btnXP) btnXP.onclick = () => { if (mode === 'XP') return; mode = 'XP'; btnXP.classList.add('active'); btnMORI.classList.remove('active');
-      if (currencyToggle) currencyToggle.style.display = 'none'; if (priceGroup) priceGroup.style.display = 'none'; if (xpInfo) xpInfo.style.display = 'block';
-      if (inputLabel) inputLabel.textContent = 'Количество вашей валюты:'; tokenInput.placeholder = 'Например: 5000'; tokenInput.value = ''; if (resultsBlock) resultsBlock.style.display = 'none'; };
+    btnMORI.onclick = () => { if (mode === 'MORI') return; mode = 'MORI'; btnMORI.classList.add('active'); btnXP.classList.remove('active');
+      currencyToggle.style.display = 'flex'; priceGroup.style.display = 'block'; xpInfo.style.display = 'none';
+      inputLabel.textContent = 'Количество ваших токенов:'; tokenInput.placeholder = 'Например: 1000'; resultsBlock.style.display = 'none'; };
+    btnXP.onclick = () => { if (mode === 'XP') return; mode = 'XP'; btnXP.classList.add('active'); btnMORI.classList.remove('active');
+      currencyToggle.style.display = 'none'; priceGroup.style.display = 'none'; xpInfo.style.display = 'block';
+      inputLabel.textContent = 'Количество вашей валюты:'; tokenInput.placeholder = 'Например: 5000'; tokenInput.value = ''; resultsBlock.style.display = 'none'; };
+    btnUSD.onclick = () => { if (currentCurrency === 'USD') return; currentCurrency = 'USD'; btnUSD.classList.add('active'); btnRUB.classList.remove('active'); updateCalcPriceBtn(coinData.market_data?.current_price?.usd, coinData.market_data?.current_price?.rub); };
+    btnRUB.onclick = () => { if (currentCurrency === 'RUB') return; currentCurrency = 'RUB'; btnRUB.classList.add('active'); btnUSD.classList.remove('active'); updateCalcPriceBtn(coinData.market_data?.current_price?.usd, coinData.market_data?.current_price?.rub); };
 
-    if (btnUSD) btnUSD.onclick = () => { if (currentCurrency === 'USD') return; currentCurrency = 'USD'; btnUSD.classList.add('active'); btnRUB.classList.remove('active'); updateCalcPriceBtn(coinData.market_data?.current_price?.usd, coinData.market_data?.current_price?.rub); };
-    if (btnRUB) btnRUB.onclick = () => { if (currentCurrency === 'RUB') return; currentCurrency = 'RUB'; btnRUB.classList.add('active'); btnUSD.classList.remove('active'); updateCalcPriceBtn(coinData.market_data?.current_price?.usd, coinData.market_data?.current_price?.rub); };
-
-    if (calcBtn) calcBtn.onclick = () => {
+    calcBtn.onclick = () => {
       if (!usdToRub || Object.keys(coinData).length === 0) { alert('Данные не загружены. Подождите или обновите страницу.'); return; }
       const market = coinData.market_data || {};
       const priceUSD = market.current_price?.usd || 0;
@@ -746,21 +574,20 @@
       totalRUB = totalUSD * usdToRub;
       const usdStr = totalUSD.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + ' $';
       const rubStr = totalRUB.toLocaleString('ru-RU', { maximumFractionDigits: 0 }) + ' ₽';
-      if (resultsBlock) { resultsBlock.style.display = 'block'; resultsBlock.style.opacity = 0;
-        setTimeout(() => { resultsBlock.style.opacity = 1; }, 50); }
+      resultsBlock.style.display = 'block'; resultsBlock.style.opacity = 0;
+      setTimeout(() => resultsBlock.style.opacity = 1, 50);
       if (mode === 'MORI') {
-        if (resultPrimary) resultPrimary.innerHTML = `<p>Стоимость в USD: <strong class="highlight">${usdStr}</strong></p>`;
-        if (resultSecondary) resultSecondary.innerHTML = `<p>Стоимость в RUB: <strong class="highlight">${rubStr}</strong></p>`;
-        if (resultTertiary) resultTertiary.innerHTML = '';
+        resultPrimary.innerHTML = `<p>Стоимость в USD: <strong class="highlight">${usdStr}</strong></p>`;
+        resultSecondary.innerHTML = `<p>Стоимость в RUB: <strong class="highlight">${rubStr}</strong></p>`;
+        resultTertiary.innerHTML = '';
       } else {
         const moriStr = moriFromXP.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + ' $MORI';
-        if (resultPrimary) resultPrimary.innerHTML = `<p>Эквивалент $MORI: <strong class="highlight">${moriStr}</strong></p>`;
-        if (resultSecondary) resultSecondary.innerHTML = `<p>Стоимость в USD: <strong class="highlight">${usdStr}</strong></p>`;
-        if (resultTertiary) resultTertiary.innerHTML = `<p>Стоимость в RUB: <strong class="highlight">${rubStr}</strong></p>`;
+        resultPrimary.innerHTML = `<p>Эквивалент $MORI: <strong class="highlight">${moriStr}</strong></p>`;
+        resultSecondary.innerHTML = `<p>Стоимость в USD: <strong class="highlight">${usdStr}</strong></p>`;
+        resultTertiary.innerHTML = `<p>Стоимость в RUB: <strong class="highlight">${rubStr}</strong></p>`;
       }
     };
 
-    // === Покупка ===
     const buyBtnRUB = document.getElementById('buyBtnRUB');
     const buyBtnUSD = document.getElementById('buyBtnUSD');
     const buyInput = document.getElementById('buyInput');
@@ -770,26 +597,23 @@
     const buyResultFiat = document.getElementById('buyResultFiat');
     let buyCurrency = 'RUB';
 
-    if (buyBtnRUB) buyBtnRUB.onclick = () => { if (buyCurrency === 'RUB') return; buyCurrency = 'RUB'; buyBtnRUB.classList.add('active'); buyBtnUSD.classList.remove('active'); };
-    if (buyBtnUSD) buyBtnUSD.onclick = () => { if (buyCurrency === 'USD') return; buyCurrency = 'USD'; buyBtnUSD.classList.add('active'); buyBtnRUB.classList.remove('active'); };
+    buyBtnRUB.onclick = () => { if (buyCurrency === 'RUB') return; buyCurrency = 'RUB'; buyBtnRUB.classList.add('active'); buyBtnUSD.classList.remove('active'); };
+    buyBtnUSD.onclick = () => { if (buyCurrency === 'USD') return; buyCurrency = 'USD'; buyBtnUSD.classList.add('active'); buyBtnRUB.classList.remove('active'); };
 
-    if (buyCalcBtn) buyCalcBtn.onclick = () => {
+    buyCalcBtn.onclick = () => {
       if (!usdToRub || Object.keys(coinData).length === 0) { alert('Данные не загружены. Подождите или обновите страницу.'); return; }
       const market = coinData.market_data || {};
       const priceUSD = market.current_price?.usd || 0;
       const raw = buyInput.value.replace(',', '.').trim();
       const amountFiat = parseFloat(raw) || 0;
       if (amountFiat <= 0) { alert('Введите корректное значение'); return; }
-
       let amountInUSD = buyCurrency === 'USD' ? amountFiat : (amountFiat / usdToRub);
       let moriAmount = amountInUSD / priceUSD;
-
       const moriStr = moriAmount.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + ' $MORI';
       const fiatStr = amountFiat.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + (buyCurrency === 'USD' ? ' $' : ' ₽');
-
-      if (buyResultsBlock) buyResultsBlock.style.display = 'block';
-      if (buyResultMori) buyResultMori.innerHTML = `<p>Вы получите: <strong class="highlight">${moriStr}</strong></p>`;
-      if (buyResultFiat) buyResultFiat.innerHTML = `<p>На сумму: <strong class="highlight">${fiatStr}</strong></p>`;
+      buyResultsBlock.style.display = 'block';
+      buyResultMori.innerHTML = `<p>Вы получите: <strong class="highlight">${moriStr}</strong></p>`;
+      buyResultFiat.innerHTML = `<p>На сумму: <strong class="highlight">${fiatStr}</strong></p>`;
     };
   </script>
 </body>
