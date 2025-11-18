@@ -245,10 +245,18 @@
     .stake-total-wrapper {margin-top:18px;padding-top:14px;border-top:1px dashed rgba(255,213,0,0.3);}
     .stake-label-total {font-size:13px;color:rgba(255,255,255,0.6);}
     #stakePeriodSelected {color:#FFD500;font-weight:600;}
-    .stake-total-big {font-size:36px;font-weight:700;color:#FFD500;line-height:1.1;}
+    .stake-total-big {font-size:36px;font-weight:700;color:#FFD500;line-height:2;}
     .stake-unlock-date {margin-top:24px;padding-top:20px;border-top:1px dashed rgba(255,213,0,0.3);text-align:center;}
     .unlock-label {font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:6px;}
     .unlock-date-big {font-size:24px;font-weight:700;color:#FFD500;}
+    .staking-btn {
+   display: block;        /* превращает в блочный — можно центрировать */
+  width: 80%;            /* ширина кнопки (можешь менять: 70–100%) */
+  margin: 25px auto 0;   /* auto — центрирует по горизонтали */
+  text-align: center;    /* текст по центру */
+  padding: 14px 0;       /* высота кнопки */
+}
+}
   </style>
 </head>
 <body>
@@ -328,7 +336,7 @@
               <div class="unlock-date-big" id="unlockDate">18 декабря 2025</div>
             </div>
           </div>
-          <a href="https://moristake.in" class="buy-now-btn" target="_blank">Застейкать</a>
+          <a href="https://moristake.in" class="buy-now-btn staking-btn"" target="_blank">Застейкать</a>
         </div>
       </div>
     </div>
