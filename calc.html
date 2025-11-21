@@ -361,51 +361,68 @@
         <button class="btn" id="buyCalcBtn">Рассчитать</button>
         <a href="https://t.me/MoriForum/1321532/1321535" class="buy-now-btn" target="_blank"> Купить</a>
       </div>
+      
       <div class="course-info" id="buyCourseInfo">
         Курс USD/RUB: <span id="buyCourseStatus">Загрузка...</span>
       </div>
+      
       <div class="buy-results" id="buyResultsBlock" style="display:none;">
         <div id="buyResultMori"></div>
         <div id="buyResultFiat"></div>
       </div>
     </div>
 
-    <!-- Цена -->
-    <div class="page price-page" id="pricePage">
-      <h2>Текущая цена $MORI</h2>
-      <br>
-      <div class="price-page-content">
-        <div class="price-header">
-          <img id="coinLogo" src="" alt="$MORI" style="display:none;">
-          <h3>$MORI / USD</h3>
-        </div>
-        <div class="current-price-big" id="currentPriceBig">Загрузка...</div>
-        <div class="price-change" id="priceChange24h">-</div>
-        <div class="price-update" id="priceUpdateTime"></div>
-        <div class="price-stats-grid">
-          <div class="price-stat-item"><div class="price-stat-label">Рыночная капитализация</div><div class="price-stat-value" id="marketCap">-</div></div>
-          <div class="price-stat-item"><div class="price-stat-label">Объём торгов (24ч)</div><div class="price-stat-value" id="volume24h">-</div></div>
-          <div class="price-stat-item"><div class="price-stat-label">Циркулирующий объём</div><div class="price-stat-value" id="circulatingSupply">-</div></div>
-          <div class="price-stat-item"><div class="price-stat-label">Максимальный объём</div><div class="price-stat-value" id="totalSupply">-</div></div>
-         <!-- Новые 4 строки — ATH, ATL, 24h High, 24h Low -->
-  <div class="price-stat-item"><div class="price-stat-label">ATH (все время)</div><div class="price-stat-value" id="ath">-</div></div>
-  <div class="price-stat-item"><div class="price-stat-label">ATL (все время)</div><div class="price-stat-value" id="atl">-</div></div>
-  <div class="price-stat-item"><div class="price-stat-label">Максимум за 24ч</div><div class="price-stat-value" id="high24h" style="color:#28a745;">-</div></div>
-  <div class="price-stat-item"><div class="price-stat-label">Минимум за 24ч</div><div class="price-stat-value" id="low24h" style="color:#dc3545;">-</div></div>
-        </div>
-        <div class="chart-container" id="chartContainer">
-          <div class="chart-loading" id="chartLoading">Загрузка графика...</div>
-        </div>
-        <div class="price-links">
-          <a href="https://www.coingecko.com/en/coins/mori-coin" class="price-link" target="_blank"><i class="fab fa-coingecko"></i> CoinGecko</a>
-          <a id="websiteLink" href="#" class="price-link" target="_blank" style="display:none;"><i class="fas fa-globe"></i> Сайт</a>
-          <a id="twitterLink" href="#" class="price-link" target="_blank" style="display:none;"><i class="fab fa-twitter"></i> Twitter</a>
-        </div>
-        <p style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:20px;">
-          График: свечи за 30 дней (TradingView). Данные обновляются автоматически.
-        </p>
-      </div>
+  <!-- Цена -->
+<div class="page price-page" id="pricePage">
+  <h2>Текущая цена $MORI</h2>
+  <br>
+  <div class="price-page-content">
+    <div class="price-header">
+      <img id="coinLogo" src="" alt="$MORI" style="display:none;">
+      <h3>$MORI / USD</h3>
     </div>
+    <div class="current-price-big" id="currentPriceBig">Загрузка...</div>
+    <div class="price-change" id="priceChange24h">-</div>
+    <div class="price-update" id="priceUpdateTime"></div>
+
+
+    <div class="price-stats-grid">
+      <div class="price-stat-item"><div class="price-stat-label">Рыночная капитализация</div><div class="price-stat-value" id="marketCap">-</div></div>
+      <div class="price-stat-item"><div class="price-stat-label">Объём торгов на биржах (24ч)</div><div class="price-stat-value" id="volume24h">-</div></div>
+      <div class="price-stat-item"><div class="price-stat-label">Циркулирующий объём</div><div class="price-stat-value" id="circulatingSupply">-</div></div>
+      <div class="price-stat-item"><div class="price-stat-label">Максимальный объём</div><div class="price-stat-value" id="totalSupply">-</div></div>
+
+      <!-- Стейкинг -->
+      <div class="price-stat-item">
+        <div class="price-stat-label">Всего застейкано</div>
+        <div class="price-stat-value" id="totalStaked">Загрузка...</div>
+      </div>
+      <div class="price-stat-item">
+        <div class="price-stat-label">Заблокировано (USD)</div>
+        <div class="price-stat-value" id="tvlUsd">Загрузка...</div>
+      </div>
+
+      <!-- ATH и т.д. -->
+      <div class="price-stat-item"><div class="price-stat-label">ATH (макс.все время)</div><div class="price-stat-value" id="ath">-</div></div>
+      <div class="price-stat-item"><div class="price-stat-label">ATL (мин.все время)</div><div class="price-stat-value" id="atl">-</div></div>
+      <div class="price-stat-item"><div class="price-stat-label">Максимум за 24ч</div><div class="price-stat-value" id="high24h" style="color:#28a745;">-</div></div>
+      <div class="price-stat-item"><div class="price-stat-label">Минимум за 24ч</div><div class="price-stat-value" id="low24h" style="color:#dc3545;">-</div></div>
+    </div>
+
+    <div class="chart-container" id="chartContainer">
+      <div class="chart-loading" id="chartLoading">Загрузка графика...</div>
+    </div>
+    <div class="price-links">
+      <a href="https://www.coingecko.com/en/coins/mori-coin" class="price-link" target="_blank">CoinGecko</a>
+      <a id="websiteLink" href="#" class="price-link" target="_blank" style="display:none;">Сайт</a>
+      <a id="twitterLink" href="#" class="price-link" target="_blank" style="display:none;">Twitter</a>
+    </div>
+    <p style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:20px;">
+      График: свечи за 30 дней (TradingView). Данные обновляются автоматически.
+    </p>
+  </div>
+</div>
+
 
     <!-- Инфо -->
     <div class="page info-page" id="infoPage">
@@ -794,6 +811,58 @@
       buyResultMori.innerHTML = `<p>Вы получите: <strong class="highlight">${moriStr}</strong></p>`;
       buyResultFiat.innerHTML = `<p>На сумму: <strong class="highlight">${fiatStr}</strong></p>`;
     };
+    
+    
+
+// Живые данные с Mori API + ПРИНУДИТЕЛЬНЫЙ ЗОЛОТОЙ ЦВЕТ #FFD500
+async function loadData() {
+  const el = document.getElementById('totalStaked');
+  const elTvl = document.getElementById('tvlUsd');
+  
+  try {
+    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://moristake.in/api/v2/pool/total-staked');
+    const resp = await fetch(proxyUrl);
+    const proxyData = await resp.json();
+    const data = JSON.parse(proxyData.contents);
+   
+    if (data.success && data.data.mori > 0) {
+      const amount = Number(data.data.mori).toLocaleString('ru-RU');
+      el.innerHTML = `<strong>${amount}</strong> $MORI`;
+      el.style.color = '#FFD500';        // ← ПРИНУДИТЕЛЬНО золотой
+      el.style.fontWeight = 'bold';
+    } else {
+      throw new Error('Нет данных');
+    }
+
+    if (data.data.usd > 0) {
+      const tvl = Number(data.data.usd).toLocaleString('ru-RU');
+      elTvl.innerHTML = `<strong>$${tvl}</strong>`;
+      elTvl.style.color = '#FFD500';     // ← ПРИНУДИТЕЛЬНО золотой
+      elTvl.style.fontWeight = 'bold';
+    } else {
+      elTvl.textContent = 'Нет данных';
+      elTvl.style.color = '#ff6b6b';
+    }
+  } catch (err) {
+    console.error('Ошибка:', err);
+    el.textContent = 'Не удалось загрузить';
+    el.style.color = '#ff6b6b';
+    
+    if (elTvl) {
+      elTvl.textContent = 'Не удалось загрузить';
+      elTvl.style.color = '#ff6b6b';
+    }
+  }
+}
+
+loadData();
+setInterval(loadData, 10000);
+
+
+
+
 </script>
+
+
 </body>
 </html>
