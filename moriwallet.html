@@ -2,24 +2,71 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MORI Wallet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>MORI Wallet — Premium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Inter',sans-serif;background:#000;color:#fff;min-height:100vh;}
-        .app{max-width:420px;margin:0 auto;padding:20px 16px 130px;
-            background:radial-gradient(circle at 50% 0%,#1a1810,#000 70%);}
-        .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;}
-        .left{display:flex;align-items:center;gap:14px;}
-        .avatar{width:48px;height:48px;border-radius:50%;
+        body{
+            font-family: 'Manrope', 'Inter', sans-serif;
+            background:#000;
+            color:#fff;
+            min-height:100vh;
+        }
+        .screen {
+            display: none;
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 20px 16px 130px;
+            background: radial-gradient(circle at 50% 0%, #1a1810, #000 70%);
+            min-height: 100vh;
+        }
+        .screen.active {
+            display: block;
+        }
+        .header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:32px;
+        }
+        .left{
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }
+        .avatar{
+            width:48px;
+            height:48px;
+            border-radius:50%;
             background:url('https://www.mexc.com/api/file/download/F20250705153943960fdyewuNgmAyU77') center/cover;
-            border:3px solid #FFD500;box-shadow:0 0 25px rgba(255,213,0,.5);}
-        .username{font-size:19px;font-weight:700;color:#FFD500;}
-        .beta{background:rgba(255,213,0,.25);color:#FFD500;padding:6px 14px;border-radius:20px;
-            font-size:13px;font-weight:600;border:1px solid rgba(255,213,0,.4);}
-        /* Баланс — всё красиво и прозрачно */
+            border:3px solid #FFD500;
+            box-shadow:0 0 25px rgba(255,213,0,.5);
+        }
+        .username{
+            font-size:19px;
+            font-weight:700;
+            color:#FFD500;
+            cursor: pointer;
+        }
+        .beta{
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background:rgba(255,213,0,.25);
+            color:#FFD500;
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:13px;
+            font-weight:600;
+            border:1px solid rgba(255,213,0,.4);
+        }
+        .beta i {
+            font-size: 14px;
+            cursor: pointer;
+        }
         .balance{
             background:rgba(255,255,255,.07);
             backdrop-filter:blur(20px);
@@ -46,6 +93,7 @@
             width:34px;height:34px;background:#FFD500;border-radius:50%;
             display:grid;place-items:center;color:#000;font-weight:900;font-size:17px;
             box-shadow:0 0 20px rgba(255,213,0,.7);
+            cursor: pointer;
         }
         .amount{
             font-size:44px;
@@ -58,14 +106,49 @@
             gap:6px;
             white-space:nowrap;
         }
-        .amount .rub{
-            font-size:36px;
-            font-weight:500;
-            color:#ccaa77;
+        .amount .cur-btn{
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,213,0,0.4);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #FFD500;
+            cursor: pointer;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
         }
-        /* Кнопки — широкие, с размытием и прозрачностью */
+        .currency-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #111;
+            border: 1px solid rgba(255,213,0,0.3);
+            border-radius: 12px;
+            margin-top: 8px;
+            display: none;
+            z-index: 10;
+            padding: 8px 0;
+        }
+        .currency-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .currency-option:hover,
+        .currency-option.active {
+            color: #FFD500;
+        }
         .actions{margin-bottom:40px;}
         .actions-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;text-align:center;}
+        .action-card{
+            cursor: pointer;
+        }
         .action-btn{
             background:rgba(255,255,255,.07);
             backdrop-filter:blur(12px);
@@ -73,44 +156,19 @@
             border-radius:16px;
             height:68px;
             display:flex;align-items:center;justify-content:center;
-            transition:all .3s;
+            transition:all .2s;
         }
-        .action-btn:active{transform:scale(.94);background:rgba(255,213,0,.15);}
+        .action-btn:active,
+        .history-item:active,
+        .profile-row:active,
+        .profile-btn:active,
+        .card-btn:active,
+        .nav-item:active {
+            transform: scale(0.96);
+            background: rgba(255,213,0,.15);
+        }
         .action-btn i{font-size:22px;color:#FFD500;}
         .action-label{font-size:11.8px;margin-top:8px;opacity:.9;font-weight:500;}
-        .ref{background:rgba(255,255,255,.07);backdrop-filter:blur(12px);
-            border:1px solid rgba(255,213,0,.3);border-radius:24px;padding:26px;
-            text-align:center;margin-bottom:36px;}
-        .ref h3{font-size:19px;color:#FFD500;margin-bottom:10px;font-weight:700;}
-        .ref button{margin-top:16px;background:linear-gradient(135deg,#FFD500,#ccaa00);
-            color:#000;border:none;padding:15px 44px;border-radius:16px;font-weight:700;
-            font-size:17px;box-shadow:0 6px 20px rgba(255,213,0,.4);}
-        .asset{background:rgba(255,255,255,.07);backdrop-filter:blur(12px);
-            border:1px solid rgba(255,213,0,.3);border-radius:20px;padding:18px;
-            display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-        .asset-left{display:flex;align-items:center;gap:14px;}
-        .icon{width:50px;height:50px;border-radius:14px;object-fit:contain;background:#111;padding:4px;}
-        .new{background:#FFD500;color:#000;padding:4px 10px;border-radius:10px;
-            font-size:11px;font-weight:700;margin-left:8px;}
-        .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-            width:100%;max-width:420px;background:rgba(15,15,17,.98);backdrop-filter:blur(20px);
-            border-top:1px solid rgba(255,213,0,.4);padding:14px 20px env(safe-area-inset-bottom);
-            display:flex;justify-content:space-between;align-items:center;
-            box-shadow:0 -10px 30px rgba(0,0,0,.9);}
-        .nav::before{content:"";position:absolute;top:0;left:12px;right:12px;height:1px;
-            background:linear-gradient(90deg,transparent,#ffba00,#ff9500,#ffba00,transparent);opacity:.8;}
-        .nav-item{color:rgba(255,255,255,.6);font-size:11px;text-align:center;flex:1;}
-        .nav-item i{font-size:23px;display:block;margin-bottom:4px;}
-        .nav-item.active{color:#FFD500;}
-        .qr-btn{width:56px;height:56px;background:rgba(255,255,255,.12);
-            border:2px solid #FFD500;border-radius:18px;display:grid;place-items:center;
-            color:#FFD500;font-size:28px;box-shadow:0 6px 20px rgba(255,213,0,.4);}
- .qr-btn{width:56px;height:56px;background:rgba(255,255,255,.12);
-            border:2px solid #FFD500;border-radius:18px;display:grid;place-items:center;
-            color:#FFD500;font-size:28px;box-shadow:0 6px 20px rgba(255,213,0,.4);}
-            
-            
-        /* ←←← ТОЛЬКО ЭТОТ БЛОК ДОБАВЛЕН ←←← */
         .burned{
             background:rgba(255,255,255,.07);
             backdrop-filter:blur(20px);
@@ -124,165 +182,886 @@
         .burned-amount{font-size:36px;font-weight:700;color:#ff6b35;display:flex;align-items:center;justify-content:center;gap:10px;}
         .fire{animation:f 1.8s infinite ease-in-out;}
         @keyframes f{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-        /* ←←← КОНЕЦ ДОБАВЛЕННОГО ←←← */
+        .asset{
+            background:rgba(255,255,255,.07);
+            backdrop-filter:blur(12px);
+            border:1px solid rgba(255,213,0,.3);
+            border-radius:20px;
+            padding:18px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-bottom:14px;
+        }
+        .asset-left{display:flex;align-items:center;gap:14px;}
+        .icon{width:50px;height:50px;border-radius:14px;object-fit:contain;background:#111;padding:4px;}
+        .new{background:#FFD500;color:#000;padding:4px 10px;border-radius:10px;font-size:11px;font-weight:700;margin-left:8px;}
+        .nav{
+            position:fixed;
+            bottom:0;
+            left:50%;
+            transform:translateX(-50%);
+            width:100%;
+            max-width:420px;
+            background:rgba(15,15,17,.98);
+            backdrop-filter:blur(20px);
+            border-top:1px solid rgba(255,213,0,.4);
+            padding:14px 20px env(safe-area-inset-bottom);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow:0 -10px 30px rgba(0,0,0,.9);
+            z-index:100;
+        }
+        .nav::before{
+            content:"";
+            position:absolute;
+            top:0;
+            left:12px;
+            right:12px;
+            height:1px;
+            background:linear-gradient(90deg,transparent,#ffba00,#ff9500,#ffba00,transparent);
+            opacity:.8;
+        }
+        .nav-item{
+            color:rgba(255,255,255,.6);
+            font-size:11px;
+            text-align:center;
+            flex:1;
+            cursor:pointer;
+        }
+        .nav-item i{font-size:23px;display:block;margin-bottom:4px;}
+        .nav-item.active{color:#FFD500;}
+        .qr-btn{
+            width:56px;
+            height:56px;
+            background:rgba(255,255,255,.12);
+            border:2px solid #FFD500;
+            border-radius:18px;
+            display:grid;
+            place-items:center;
+            color:#FFD500;
+            font-size:28px;
+            box-shadow:0 6px 20px rgba(255,213,0,.4);
+            z-index:101;
+            position: relative;
+        }
+        .history-item {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,213,0,.3);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+        }
+        .history-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #111;
+            display: grid;
+            place-items: center;
+            color: #FFD500;
+            font-size: 16px;
+        }
+        .history-info { flex: 1; }
+        .history-title { font-weight: 600; font-size: 16px; }
+        .history-time { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+        .history-amount { font-weight: 700; font-size: 16px; }
+        .profile-section {
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,213,0,.3);
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+        }
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+        .profile-row:last-child { border: none; }
+        .profile-label { font-size: 16px; }
+        .profile-value { color: #FFD500; font-weight: 600; }
+        .profile-btn {
+            background: rgba(255,213,0,.15);
+            color: #FFD500;
+            border: 1px solid #FFD500;
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .credit-card {
+            width: 100%;
+            height: 200px;
+            border-radius: 16px;
+            background: url('https://denque.myjino.ru/card.png') center/cover no-repeat;
+            color: #fff;
+            padding: 18px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+            margin: 0 auto 12px;
+            display:flex;flex-direction:column;justify-content:space-between;
+            position: relative;
+        }
+        .credit-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            border-radius: 16px;
+            pointer-events: none;
+        }
+        .card-content {
+            position: relative;
+            z-index: 3;
+        }
+        .card-chip{
+            width:40px;
+            height:28px;
+            background:linear-gradient(90deg,#ffd500,#ccaa00);
+            border-radius:4px;
+        }
+        .card-number{
+            font-size:16px;
+            letter-spacing:2px;
+            font-weight:600;
+        }
+        .card-info{
+            display:flex;
+            justify-content:space-between;
+            font-size:13px;
+            opacity:.9;
+        }
+        .scanner-overlay{position:fixed;inset:0;background:#000;z-index:9999;display:none;justify-content:center;align-items:center;flex-direction:column;}
+        .scanner-box{position:relative;width:280px;height:280px;overflow:hidden;border-radius:24px;}
+        #video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:auto;height:auto;object-fit:cover;}
+        .scanner-frame{position:absolute;inset:0;border:4px solid rgba(255,213,0,0.5);border-radius:24px;box-shadow:0 0 0 100vmax rgba(0,0,0,0.9);pointer-events:none;z-index:2;}
+        .scanner-line{position:absolute;top:0;left:50%;width:100%;height:4px;background:linear-gradient(90deg,transparent,#FFD500,transparent);transform:translateX(-50%);animation:scan 3s linear infinite;z-index:3;}
+        @keyframes scan{0%{top:-10px}100%{top:100%}}
+        .mori-pay-sheet {
+            position: fixed;
+            bottom: -100vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 420px;
+            background: #111;
+            border-radius: 28px 28px 0 0;
+            padding: 16px 20px calc(120px + env(safe-area-inset-bottom));
+            z-index: 1000;
+            transition: bottom .65s cubic-bezier(0.16,1,0.3,1);
+            box-shadow: 0 -20px 50px rgba(0,0,0,0.9);
+            display: none;
+        }
+        .mori-handle {
+            width: 40px;
+            height: 5px;
+            background: rgba(255,213,0,.4);
+            border-radius: 3px;
+            margin: 0 auto 20px;
+        }
+        .mori-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFD500;
+            margin-bottom: 24px;
+        }
+        .mori-sender {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 16px;
+            margin-bottom: 10px;
+        }
+        .mori-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+        }
+        .mori-label {
+            font-size: 15px;
+            opacity: 0.8;
+        }
+        .mori-name {
+            font-weight: 700;
+            font-size: 17px;
+        }
+        .mori-amount {
+            text-align: center;
+            font-size: 48px;
+            font-weight: 800;
+            color: #FFD500;
+            margin: 20px 0 16px;
+        }
+        .mori-usd {
+            font-size: 17px;
+            color: #888;
+            margin-left: 12px;
+        }
+        .mori-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 16px;
+            margin: 8px 0;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            font-size: 15px;
+        }
+        .mori-gray { opacity: 0.7; font-size: 14px; }
+        .arrow { opacity: 0.5; margin: 0 6px; }
+        .mori-coin {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 16px;
+            margin: 20px 0;
+        }
+        .mori-coin-icon { width: 44px; height: 44px; border-radius: 12px; }
+        .mori-coin-info { flex: 1; }
+        .mori-coin-name { font-weight: 700; font-size: 16px; }
+        .mori-balance { font-size: 13px; opacity: 0.7; margin-top: 2px; }
+        .mori-coin-amount { font-weight: 700; color: #FFD500; font-size: 17px; }
+        .mori-arrow { opacity: 0.5; }
+        .mori-total { font-size: 16px; font-weight: 600; background: rgba(255,213,0,0.07); }
+        .mori-burn { color: #ff6b35; background: rgba(255,107,53,0.08); }
+        .bold { font-weight: 700; }
+        .mori-pay-btn {
+            width: 100%;
+            background: linear-gradient(135deg,#FFD500,#ccaa00);
+            color: #000;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 19px;
+            border: none;
+            border-radius: 18px;
+            margin-top: 12px;
+            box-shadow: 0 8px 22px rgba(255,213,0,0.45);
+        }
+        .mori-auto {
+            text-align: center;
+            margin-top: 22px;
+            color: #888;
+            font-size: 14px;
+        }
+        .success-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .success-wrapper {
+            background: #111;
+            border-radius: 32px;
+            padding: 50px 30px 40px;
+            text-align: center;
+            max-width: 360px;
+            width: 90%;
+            box-shadow: 0 30px 80px rgba(255,213,0,0.25);
+            animation: slideUp 0.7s cubic-bezier(0.16,1,0.3,1);
+            border: 1px solid rgba(255,213,0,0.15);
+        }
+        .success-checkmark {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 24px;
+        }
+        .checkmark-path {
+            stroke-dasharray: 160;
+            stroke-dashoffset: 160;
+            animation: drawCheck 1.2s ease-out forwards, pulse 2s infinite 1s;
+        }
+        .success-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #FFD500;
+            margin: 0 0 16px;
+            letter-spacing: -0.5px;
+        }
+        .success-amount {
+            font-size: 42px;
+            font-weight: 900;
+            color: #fff;
+            margin: 12px 0 24px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+        }
+        .success-details {
+            margin: 24px 0;
+            font-size: 16px;
+            color: #aaa;
+        }
+        .success-burn {
+            color: #ff6b35;
+            margin-bottom: 8px;
+        }
+        .success-operation {
+            color: #4caf50;
+            font-weight: 600;
+            margin: 0 0 12px;
+        }
+        .success-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #FFD500, #ccaa00);
+            color: #000;
+            font-size: 19px;
+            font-weight: 800;
+            padding: 18px;
+            border: none;
+            border-radius: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(255,213,0,0.4);
+            transition: all 0.3s;
+        }
+        .success-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 6px 16px rgba(255,213,0,0.3);
+        }
+        @keyframes fadeIn { from {opacity:0} to {opacity:1} }
+        @keyframes slideUp { from {transform:translateY(100px);opacity:0} to {transform:translateY(0);opacity:1} }
+        @keyframes drawCheck { to {stroke-dashoffset: 0} }
+        @keyframes pulse { 0%,100% {transform:scale(1)} 50% {transform:scale(1.08)} }
+        .rating-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-family: monospace;
+        }
+        .rating-pos {
+            width: 30px;
+            text-align: center;
+            font-weight: 700;
+            opacity: 0.7;
+        }
+        .rating-address {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .rating-amount {
+            margin-left: auto;
+            font-weight: 700;
+            color: #ff6b35;
+        }
+        .rating-you {
+            background: rgba(255,213,0,0.1);
+            border-radius: 10px;
+        }
+        input[type="text"] {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,213,0,0.3);
+            border-radius: 14px;
+            padding: 14px;
+            color: #fff;
+            font-size: 16px;
+            width: 100%;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #FFD500;
+            box-shadow: 0 0 0 2px rgba(255,213,0,0.3);
+        }
+        .sell-method {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,213,0,0.3);
+            color: #aaa;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+        }
+        .sell-method.active {
+            background: rgba(255,213,0,0.15);
+            color: #FFD500;
+            border-color: #FFD500;
+        }
+        .send-methods {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .send-method-item {
+            flex: 1;
+            text-align: center;
+            padding: 12px 0;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .send-method-item i {
+            font-size: 20px;
+            color: #FFD500;
+            margin-bottom: 6px;
+        }
+        .send-method-item.active {
+            background: rgba(255,213,0,0.15);
+            color: #FFD500;
+        }
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: #111;
+            display: grid;
+            place-items: center;
+            color: #FFD500;
+            font-size: 18px;
+        }
+        .deposit-section {
+            font-size:13px;
+            color:#888;
+            margin-top:12px;
+            line-height:1.4;
+        }
+        .deposit-amounts {
+            display:flex;
+            gap:12px;
+            margin-bottom:16px;
+        }
+        .deposit-amounts button {
+            flex:1;
+            background:rgba(255,213,0,.15);
+            color:#FFD500;
+            border:1px solid #FFD500;
+            padding:10px;
+            border-radius:12px;
+            font-size:15px;
+            font-weight:600;
+        }
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .card-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #FFD500, #ccaa00);
+            color: #000;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 11px 0;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255,213,0,0.3);
+        }
+        .card-btn:active {
+            transform: scale(0.97);
+        }
     </style>
 </head>
 <body>
-    
-    
-    
-<div class="app">
+<!-- === ЭКРАН: ГЛАВНАЯ === -->
+<div id="homeScreen" class="screen active">
     <div class="header">
         <div class="left">
             <div class="avatar"></div>
-            <div class="username">prwofi</div>
+            <div class="username" id="usernameClickable">prwofi</div>
         </div>
-        <div class="beta">beta</div>
+        <div class="beta">
+            beta
+            <i class="fas fa-info-circle" id="betaInfoBtn"></i>
+        </div>
     </div>
-
-    <div class="balance">
+    <div class="balance" id="balanceContainer">
         <div class="bal-top">
             Общий баланс
-            <div class="eye"><i class="fas fa-eye"></i></div>
+            <div class="eye" id="toggleBalance"><i class="fas fa-eye"></i></div>
         </div>
-        <div class="amount">
-            127 450.37 <span class="rub">RUB</span>
+        <div class="amount" id="balanceAmount">89&nbsp;554 <span class="cur-btn" id="currencyBtn">RUB</span></div>
+        <div class="currency-dropdown" id="currencyDropdown">
+            <div class="currency-option active" data-currency="RUB">RUB</div>
+            <div class="currency-option" data-currency="USD">USD</div>
         </div>
     </div>
-
-
-
-
     <div class="actions">
-        <div class="actions-grid">
-            <div>
-                <div class="action-btn"><i class="fas fa-plus"></i></div>
-                <div class="action-label">Пополнить</div>
+        <div class="actions-grid" id="actionCards">
+            <div class="action-card"><div class="action-btn"><i class="fas fa-plus"></i></div><div class="action-label">Пополнить</div></div>
+            <div class="action-card"><div class="action-btn"><i class="fas fa-paper-plane"></i></div><div class="action-label">Отправить</div></div>
+            <div class="action-card"><div class="action-btn"><i class="fas fa-exchange-alt"></i></div><div class="action-label">Обмен</div></div>
+            <div class="action-card">
+                <div class="action-btn">
+                    <svg width="28" height="28" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#FFD500" d="M704 288h131.072a32 32 0 0131.808 28.8L886.4 512h-64.384l-16-160H704v96a32 32 0 11-64 0v-96H384v96a32 32 0 01-64 0v-96H217.92l-51.2 512H512v64H131.328a32 32 0 01-31.808-35.2l57.6-576a32 32 0 0131.808-28.8H320v-22.336C320 154.688 405.504 64 512 64s192 90.688 192 201.664v22.4zm-64 0v-22.336C640 189.248 582.272 128 512 128c-70.272 0-128 61.248-128 137.664v22.4h256zm201.408 483.84L768 698.496V928a32 32 0 11-64 0V698.496l-73.344 73.344a32 32 0 11-45.248-45.248l128-128a32 32 0 0145.248 0l128 128a32 32 0 11-45.248 45.248z"/>
+                    </svg>
+                </div>
+                <div class="action-label">Продать</div>
             </div>
-            <div>
-                <div class="action-btn"><i class="fas fa-paper-plane"></i></div>
-                <div class="action-label">Отправить</div>
-            </div>
-            <div>
-                <div class="action-btn"><i class="fas fa-exchange-alt"></i></div>
-                <div class="action-label">Обмен</div>
-            </div>
-            <div>
-    <div class="action-btn">
-        <svg width="28" height="28" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#FFD500" d="M704 288h131.072a32 32 0 0131.808 28.8L886.4 512h-64.384l-16-160H704v96a32 32 0 11-64 0v-96H384v96a32 32 0 01-64 0v-96H217.92l-51.2 512H512v64H131.328a32 32 0 01-31.808-35.2l57.6-576a32 32 0 0131.808-28.8H320v-22.336C320 154.688 405.504 64 512 64s192 90.688 192 201.664v22.4zm-64 0v-22.336C640 189.248 582.272 128 512 128c-70.272 0-128 61.248-128 137.664v22.4h256zm201.408 483.84L768 698.496V928a32 32 0 11-64 0V698.496l-73.344 73.344a32 32 0 11-45.248-45.248l128-128a32 32 0 0145.248 0l128 128a32 32 0 11-45.248 45.248z"/>
-        </svg>
-    </div>
-    <div class="action-label">Продать</div>
-</div>
         </div>
     </div>
-
-      <!-- Более красивый вариант с кнопкой -->
     <div class="burned">
         <div class="burned-text">Сожжено MORI</div>
         <div class="burned-amount">
-            <i class="fas fa-fire fire"></i> 4 845
+            <i class="fas fa-fire fire"></i> <span id="burnedAmount">4 845</span>
         </div>
         <div style="margin:16px 0 12px; font-size:15px;">
-            Ты <span style="color:#FFD500; font-weight:700;">№4</span> в рейтинге сжигания 🔥
+            Ты <span style="color:#FFD500; font-weight:700;">№<span id="userRank">4</span></span> в рейтинге сжигания 🔥
         </div>
-        <button style="background:rgba(255,213,0,.15); border:1px solid #FFD500; color:#FFD500; 
-                       padding:10px 24px; border-radius:14px; font-weight:600; font-size:14.5px;">
+        <button id="openRating" style="background:rgba(255,213,0,.15); border:1px solid #FFD500; color:#FFD500; padding:10px 24px; border-radius:14px; font-weight:600; font-size:14.5px;">
             Посмотреть рейтинг
         </button>
     </div>
-
-    <div class="asset">
-        <div class="asset-left">
-            <img src="https://www.mexc.com/api/file/download/F20250705153943960fdyewuNgmAyU77" class="icon">
-            <div>
-                <div style="font-weight:700;">$MORI <span class="new">NEW</span></div>
-                <div style="font-size:14px;opacity:.8;">≈ 1.50 ₽</div>
+    <div id="assetsContainer">
+        <div class="asset">
+            <div class="asset-left">
+                <img src="https://www.mexc.com/api/file/download/F20250705153943960fdyewuNgmAyU77" class="icon">
+                <div>
+                    <div style="font-weight:700;">$MORI <span class="new">NEW</span></div>
+                    <div style="font-size:14px;opacity:.8;" id="moriPrice">≈ 1,01 ₽</div>
+                </div>
+            </div>
+            <div style="text-align:right;">
+                <div style="font-weight:700;">48 200 MORI</div>
+                <div style="font-size:14px;opacity:.8;" id="moriRubBalance">48&nbsp;634 ₽</div>
             </div>
         </div>
-        <div style="text-align:right;">
-            <div style="font-weight:700;">48 200 MORI</div>
-            <div style="font-size:14px;opacity:.8;">72 300 ₽</div>
-        </div>
-    </div>
-
-    <div class="asset">
-        <div class="asset-left">
-            <img src="https://img.icons8.com/color/48/tether--v2.png" class="icon">
-            <div>
-                <div style="font-weight:700;">USDT</div>
-                <div style="font-size:14px;opacity:.8;">≈ 96.50 ₽</div>
+        <div class="asset">
+            <div class="asset-left">
+                <img src="https://img.icons8.com/color/48/tether--v2.png" class="icon">
+                <div>
+                    <div style="font-weight:700;">USDT</div>
+                    <div style="font-size:14px;opacity:.8;" id="usdtPrice">≈ 77,35 ₽</div>
+                </div>
+            </div>
+            <div style="text-align:right;">
+                <div style="font-weight:700;">320.50 USDT</div>
+                <div style="font-size:14px;opacity:.8;" id="usdtRubBalance">24&nbsp;791 ₽</div>
             </div>
         </div>
-        <div style="text-align:right;">
-            <div style="font-weight:700;">320.50 USDT</div>
-            <div style="font-size:14px;opacity:.8;">30 928 ₽</div>
-        </div>
-    </div>
-
-    <div class="asset">
-        <div class="asset-left">
-            <img src="https://img.icons8.com/nolan/64/solana.png" class="icon">
-            <div>
-                <div style="font-weight:700;">SOL</div>
-                <div style="font-size:14px;opacity:.8;">≈ 15 200 ₽</div>
+        <div class="asset">
+            <div class="asset-left">
+                <img src="https://img.icons8.com/nolan/64/solana.png" class="icon">
+                <div>
+                    <div style="font-weight:700;">SOL</div>
+                    <div style="font-size:14px;opacity:.8;" id="solPrice">≈ 9&nbsp;956 ₽</div>
+                </div>
             </div>
-        </div>
-        <div style="text-align:right;">
-            <div style="font-weight:700;">1.62 SOL</div>
-            <div style="font-size:14px;opacity:.8;">24 624 ₽</div>
+            <div style="text-align:right;">
+                <div style="font-weight:700;">1.62 SOL</div>
+                <div style="font-size:14px;opacity:.8;" id="solRubBalance">16&nbsp;129 ₽</div>
+            </div>
         </div>
     </div>
 </div>
-
+<!-- === ЭКРАН: ИСТОРИЯ === -->
+<div id="historyScreen" class="screen">
+    <div class="header">
+        <h2 style="font-size:22px;font-weight:700;color:#FFD500;">История операций</h2>
+        <div></div>
+    </div>
+    <div class="history-item">
+        <div class="history-icon"><i class="fas fa-paper-plane"></i></div>
+        <div class="history-info">
+            <div class="history-title">Отправлено</div>
+            <div class="history-time">Сегодня, 14:22</div>
+        </div>
+        <div class="history-amount" style="color:#ff6b35;">−171.0 ₽</div>
+    </div>
+    <div class="history-item">
+        <div class="history-icon"><i class="fas fa-plus"></i></div>
+        <div class="history-info">
+            <div class="history-title">Пополнение</div>
+            <div class="history-time">Вчера, 10:05</div>
+        </div>
+        <div class="history-amount" style="color:#4caf50;">+5 000 ₽</div>
+    </div>
+    <div class="history-item">
+        <div class="history-icon"><i class="fas fa-fire"></i></div>
+        <div class="history-info">
+            <div class="history-title">Сжигание</div>
+            <div class="history-time">12 мая, 18:33</div>
+        </div>
+        <div class="history-amount" style="color:#ff6b35;">−0.57 MORI</div>
+    </div>
+    <div class="history-item">
+        <div class="history-icon"><i class="fas fa-exchange-alt"></i></div>
+        <div class="history-info">
+            <div class="history-title">Обмен USDT → MORI</div>
+            <div class="history-time">10 мая, 09:17</div>
+        </div>
+        <div class="history-amount" style="color:#FFD500;">+114 MORI</div>
+    </div>
+</div>
+<!-- === ЭКРАН: ПРОФИЛЬ === -->
+<div id="profileScreen" class="screen">
+    <div class="header">
+        <h2 style="font-size:22px;font-weight:700;color:#FFD500;">Профиль</h2>
+        <div></div>
+    </div>
+    <div class="profile-section">
+        <div class="profile-row">
+            <span class="profile-label">Имя пользователя</span>
+            <span class="profile-value">prwofi</span>
+        </div>
+        <div class="profile-row">
+            <span class="profile-label">Кошелёк</span>
+            <span class="profile-value">0x742...A3F9</span>
+        </div>
+        <div class="profile-row">
+            <span class="profile-label">Телефон</span>
+            <span class="profile-value">+7 ••• ••• 55 22</span>
+        </div>
+        <div class="profile-row">
+            <span class="profile-label">2FA</span>
+            <span class="profile-value">Включено</span>
+        </div>
+    </div>
+    <div class="profile-section">
+        <div class="profile-row">
+            <span class="profile-label">Уведомления</span>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.5);"></i>
+        </div>
+        <div class="profile-row">
+            <span class="profile-label">Безопасность</span>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.5);"></i>
+        </div>
+        <div class="profile-row">
+            <span class="profile-label">Поддержка</span>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.5);"></i>
+        </div>
+        <div class="profile-row">
+            <span class="profile-label">О приложении</span>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.5);"></i>
+        </div>
+    </div>
+    <button class="profile-btn">Выйти из аккаунта</button>
+</div>
+<!-- === ЭКРАН: ПОПОЛНИТЬ === -->
+<div id="depositScreen" class="screen">
+    <div class="header">
+        <h2 style="font-size:22px;font-weight:700;color:#FFD500;">Пополнить баланс</h2>
+        <div></div>
+    </div>
+    <div class="profile-section">
+        <div class="deposit-amounts">
+            <button data-amount="500">500 ₽</button>
+            <button data-amount="1000">1 000 ₽</button>
+            <button data-amount="5000">5 000 ₽</button>
+        </div>
+        <input type="text" id="depositAmount" inputmode="decimal" placeholder="Или введите сумму" style="width:100%; margin-bottom:12px;">
+        <input type="text" id="cardNumberInput" placeholder="Номер карты" style="width:100%;">
+        <div class="deposit-section">
+            Поддерживаемые карты: Visa, Mastercard, МИР. Средства зачисляются мгновенно.
+        </div>
+    </div>
+    <button class="profile-btn" id="submitDeposit">Пополнить</button>
+</div>
+<!-- === ЭКРАН: ОТПРАВИТЬ === -->
+<div id="sendScreen" class="screen">
+    <div class="header">
+        <h2 style="font-size:22px;font-weight:700;color:#FFD500;">Отправить</h2>
+        <div></div>
+    </div>
+    <div class="profile-section">
+        <input type="text" id="sendToInput" placeholder="Адрес кошелька, QR или ник" style="width:100%; margin-bottom:16px;">
+        <input type="text" id="sendAmountInput" inputmode="decimal" placeholder="Сумма в ₽" style="width:100%;">
+        <div style="margin-top:12px;font-size:14px;opacity:0.8;">
+            Комиссия: <span id="sendFee">0.57</span> MORI (сожжётся)
+        </div>
+    </div>
+    <div class="send-methods">
+        <div class="send-method-item active" data-type="address" id="sendAddressBtn">
+            <i class="fas fa-wallet"></i>
+            <div>Адрес</div>
+        </div>
+        <div class="send-method-item" data-type="contact" id="sendContactBtn">
+            <i class="fas fa-user"></i>
+            <div>Контакт</div>
+        </div>
+        <div class="send-method-item" data-type="qr" id="sendQrBtn">
+            <i class="fas fa-qrcode"></i>
+            <div>QR</div>
+        </div>
+    </div>
+    <button class="profile-btn" id="sendSubmit">Продолжить</button>
+</div>
+<!-- === ЭКРАН: ОБМЕН === -->
+<div id="swapScreen" class="screen">
+    <div class="header">
+        <h2 style="font-size:22px;font-weight:700;color:#FFD500;">Обмен</h2>
+        <div></div>
+    </div>
+    <div class="profile-section">
+        <div style="margin-bottom:20px;">
+            <div style="font-size:15px;opacity:0.8;margin-bottom:8px;">Отдаёшь</div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.07);border-radius:14px;">
+                <img src="https://www.mexc.com/api/file/download/F20250705153943960fdyewuNgmAyU77" id="swapFromIcon" style="width:32px;height:32px;border-radius:8px;">
+                <span id="swapFromName" style="font-weight:700;">MORI</span>
+                <input type="text" id="fromAmount" inputmode="decimal" value="100" style="flex:1;background:transparent;border:none;color:#fff;font-size:16px;text-align:right;" placeholder="0">
+            </div>
+            <div style="text-align:right;font-size:14px;opacity:0.7;margin-top:6px;" id="fromRub">≈ 101 ₽</div>
+        </div>
+        <div style="display:flex;justify-content:center;margin:16px 0;">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(255,213,0,0.2);display:grid;place-items:center;cursor:pointer;" id="swapDirection">
+                <i class="fas fa-exchange-alt" style="color:#FFD500;"></i>
+            </div>
+        </div>
+        <div>
+            <div style="font-size:15px;opacity:0.8;margin-bottom:8px;">Получаешь</div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,0.07);border-radius:14px;">
+                <img src="https://img.icons8.com/color/48/tether--v2.png" id="swapToIcon" style="width:32px;height:32px;border-radius:8px;">
+                <span id="swapToName" style="font-weight:700;">USDT</span>
+                <input type="text" id="toAmount" inputmode="decimal" value="1.307" style="flex:1;background:transparent;border:none;color:#fff;font-size:16px;text-align:right;" readonly>
+            </div>
+            <div style="text-align:right;font-size:14px;opacity:0.7;margin-top:6px;" id="toRub">≈ 101 ₽</div>
+        </div>
+    </div>
+    <div class="profile-section">
+        <div style="display:flex;justify-content:space-between;font-size:14px;">
+            <span>Курс</span>
+            <span id="swapRate">1 MORI = 0.01307 USDT</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;margin-top:8px;color:#ff6b35;">
+            <span>Комиссия</span>
+            <span id="swapFee">0.2% (сжигается)</span>
+        </div>
+    </div>
+    <button class="profile-btn" id="swapSubmit">Обменять</button>
+</div>
+<!-- === ЭКРАН: ПРОДАТЬ === -->
+<div id="sellScreen" class="screen">
+    <div class="header">
+        <h2 style="font-size:22px;font-weight:700;color:#FFD500;">Продать MORI</h2>
+        <div></div>
+    </div>
+    <div class="profile-section">
+        <div style="font-size:16px;font-weight:600;margin-bottom:12px;">На карту или СБП</div>
+        <div style="display:flex;gap:12px;margin-bottom:16px;">
+            <button class="sell-method active" data-type="card">Карта</button>
+            <button class="sell-method" data-type="sbp">СБП</button>
+        </div>
+        <div style="margin-bottom:12px;">
+            <input type="text" id="sellAmount" inputmode="decimal" placeholder="Сумма в MORI" style="width:100%;margin-bottom:12px;">
+            <input type="text" id="sellCardNumber" placeholder="Номер карты" style="width:100%; display:block;" data-type="card">
+            <input type="text" id="sellSbpPhone" placeholder="Номер телефона (СБП)" style="width:100%; display:none;" data-type="sbp">
+        </div>
+        <button class="profile-btn" id="sellSubmit">Продать</button>
+    </div>
+    <div class="profile-section">
+        <div style="font-size:16px;font-weight:600;margin-bottom:12px;">Пополнить сервис</div>
+        <div class="history-item" data-service="casino">
+            <div class="service-icon"><i class="fas fa-dice"></i></div>
+            <div class="history-info">
+                <div class="history-title">MORI Casino</div>
+                <div class="history-time">ID профиля</div>
+            </div>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.5);"></i>
+        </div>
+        <div class="history-item" data-service="vpn">
+            <div class="service-icon"><i class="fas fa-lock"></i></div>
+            <div class="history-info">
+                <div class="history-title">MORI VPN</div>
+                <div class="history-time">ID аккаунта</div>
+            </div>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.5);"></i>
+        </div>
+        <div class="history-item" data-service="mobile">
+            <div class="service-icon"><i class="fas fa-mobile"></i></div>
+            <div class="history-info">
+                <div class="history-title">Мобильная связь</div>
+                <div class="history-time">Номер телефона</div>
+            </div>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.5);"></i>
+        </div>
+        <div class="history-item" data-service="sbplink">
+            <div class="service-icon"><i class="fas fa-link"></i></div>
+            <div class="history-info">
+                <div class="history-title">СБП-ссылка</div>
+                <div class="history-time">Вставьте ссылку</div>
+            </div>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.5);"></i>
+        </div>
+    </div>
+</div>
+<!-- === ЭКРАН: КАРТА === -->
+<div id="cardScreen" class="screen">
+    <div class="header">
+        <h2 style="font-size:22px;font-weight:700;color:#FFD500;">Карта</h2>
+        <div></div>
+    </div>
+    <div class="profile-section" style="padding:24px;">
+        <div class="credit-card" role="group" aria-label="Кредитная карта">
+            <div class="card-content">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+             
+                </div>
+                <br> <br>
+                <div class="card-number" id="cardNumberDisplay">1234 5678 9012 3456</div>
+                <div class="card-info">
+                    
+                    <span><br><br><br><br>PROFESSOR WOLF&nbsp;&nbsp;&nbsp; 12/30</span>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="card-actions">
+            <button class="card-btn" id="showCardNumber2">Показать номер</button>
+            <button class="card-btn" id="copyCard2">Копировать</button>
+        </div>
+    </div>
+    <div class="profile-section">
+        <div class="profile-row">
+            <span class="profile-label">Статус</span>
+            <span style="color:#4caf50; font-weight:600;">Активна</span>
+        </div>
+        <div class="profile-row">
+            <span class="profile-label">Привязана к</span>
+            <span class="profile-value">prwofi</span>
+        </div>
+        <div class="profile-row">
+            <span class="profile-label">3D Secure</span>
+            <span class="profile-value">Включено</span>
+        </div>
+    </div>
+    <div class="profile-section">
+        <div style="font-size:14px; opacity:0.8; line-height:1.5;">
+            Номер карты привязан к твоему кошельку MORI.<br>
+            Все операции защищены 3D Secure и сжиганием комиссии.
+        </div>
+    </div>
+</div>
+<!-- === НИЖНЕЕ МЕНЮ === -->
 <div class="nav">
-    <div class="nav-item active"><i class="fas fa-home"></i><span>Главная</span></div>
-    <div class="nav-item"><i class="fas fa-history"></i><span>История</span></div>
-     <div class="qr-btn" id="qrMainBtn">
-    <svg width="36" height="36" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9.48726 3.85426H6.10746C5.50988 3.85426 4.93677 4.09165 4.51421 4.51421C4.09165 4.93677 3.85426 5.50988 3.85426 6.10746V9.48726M27.5129 3.85436H30.8927C31.4903 3.85436 32.0634 4.09175 32.486 4.51431C32.9085 4.93686 33.1459 5.50997 33.1459 6.10756V9.48735M9.48735 33.1459H6.10756C5.50997 33.1459 4.93686 32.9085 4.51431 32.486C4.09175 32.0634 3.85436 31.4903 3.85436 30.8927V27.5129M27.5129 33.1459H30.8927C31.4903 33.1459 32.0634 32.9085 32.486 32.486C32.9085 32.0634 33.1459 31.4903 33.1459 30.8927V27.5129" 
-              stroke="#FFD500" 
-              stroke-width="2.6" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"/>
-        <path d="M20.75 20.75V23H23M25.25 20.75H27.5M27.5 25.25H25.25V27.5M20.75 27.4887V27.5M23 16.25H25.25C26.4927 16.25 27.5 15.2426 27.5 14V11.75C27.5 10.5074 26.4927 9.5 25.25 9.5H23C21.7573 9.5 20.75 10.5074 20.75 11.75V14C20.75 15.2426 21.7573 16.25 23 16.25ZM11.75 27.5H14C15.2426 27.5 16.25 26.4927 16.25 25.25V23C16.25 21.7573 15.2426 20.75 14 20.75H11.75C10.5074 20.75 9.5 21.7573 9.5 23V25.25C9.5 26.4927 10.5074 27.5 11.75 27.5ZM11.75 16.25H14C15.2426 16.25 16.25 15.2426 16.25 14V11.75C16.25 10.5074 15.2426 9.5 14 9.5H11.75C10.5074 9.5 9.5 10.5074 9.5 11.75V14C9.5 15.2426 10.5074 16.25 11.75 16.25Z" 
-              stroke="#FFD500" 
-              stroke-width="2.6" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"/>
-    </svg>
+    <div class="nav-item active" data-screen="homeScreen"><i class="fas fa-home"></i><span>Главная</span></div>
+    <div class="nav-item" data-screen="historyScreen"><i class="fas fa-history"></i><span>История</span></div>
+    <div class="qr-btn" id="qrMainBtn">
+        <svg width="36" height="36" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9.48726 3.85426H6.10746C5.50988 3.85426 4.93677 4.09165 4.51421 4.51421C4.09165 4.93677 3.85426 5.50988 3.85426 6.10746V9.48726M27.5129 3.85436H30.8927C31.4903 3.85436 32.0634 4.09175 32.486 4.51431C32.9085 4.93686 33.1459 5.50997 33.1459 6.10756V9.48735M9.48735 33.1459H6.10756C5.50997 33.1459 4.93686 32.9085 4.51431 32.486C4.09175 32.0634 3.85436 31.4903 3.85436 30.8927V27.5129M27.5129 33.1459H30.8927C31.4903 33.1459 32.0634 32.9085 32.486 32.486C32.9085 32.0634 33.1459 31.4903 33.1459 30.8927V27.5129" stroke="#FFD500" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20.75 20.75V23H23M25.25 20.75H27.5M27.5 25.25H25.25V27.5M20.75 27.4887V27.5M23 16.25H25.25C26.4927 16.25 27.5 15.2426 27.5 14V11.75C27.5 10.5074 26.4927 9.5 25.25 9.5H23C21.7573 9.5 20.75 10.5074 20.75 11.75V14C20.75 15.2426 21.7573 16.25 23 16.25ZM11.75 27.5H14C15.2426 27.5 16.25 26.4927 16.25 25.25V23C16.25 21.7573 15.2426 20.75 14 20.75H11.75C10.5074 20.75 9.5 21.7573 9.5 23V25.25C9.5 26.4927 10.5074 27.5 11.75 27.5ZM11.75 16.25H14C15.2426 16.25 16.25 15.2426 16.25 14V11.75C16.25 10.5074 15.2426 9.5 14 9.5H11.75C10.5074 9.5 9.5 10.5074 9.5 11.75V14C9.5 15.2426 10.5074 16.25 11.75 16.25Z" stroke="#FFD500" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <div class="nav-item" data-screen="cardScreen"><i class="fa-solid fa-credit-card"></i><span>Карта</span></div>
+    <div class="nav-item" data-screen="profileScreen"><i class="fas fa-user"></i><span>Профиль</span></div>
 </div>
-    
-    <div class="nav-item"><i class="fas fa-globe"></i><span>Браузер</span></div>
-    <div class="nav-item"><i class="fas fa-user"></i><span>Профиль</span></div>
-</div>
-
-
-
-
-<style>
-.scanner-overlay{position:fixed;inset:0;background:#000;z-index:9999;display:none;justify-content:center;align-items:center;flex-direction:column;}
-.scanner-box{position:relative;width:280px;height:280px;overflow:hidden;border-radius:24px;}
-#video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:auto;height:auto;object-fit:cover;}
-.scanner-frame{position:absolute;inset:0;border:4px solid rgba(255,213,0,0.5);border-radius:24px;box-shadow:0 0 0 100vmax rgba(0,0,0,0.9);pointer-events:none;z-index:2;}
-.scanner-line{position:absolute;top:0;left:50%;width:100%;height:4px;background:linear-gradient(90deg,transparent,#FFD500,transparent);transform:translateX(-50%);animation:scan 3s linear infinite;z-index:3;}
-@keyframes scan{0%{top:-10px}100%{top:100%}}
-.scanner-text{margin-top:32px;font-size:18px;opacity:0.8;color:#fff;}
-
-.payment-sheet{position:fixed;bottom:-100%;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:#111;border-radius:28px 28px 0 0;padding:16px 20px calc(40px + env(safe-area-inset-bottom));z-index:9999;transition:bottom .6s cubic-bezier(0.16,1,0.3,1);box-shadow:0 -20px 40px rgba(0,0,0,0.8);}
-.sheet-handle{width:40px;height:5px;background:rgba(255,213,0,.4);border-radius:3px;margin:0 auto 20px;}
-.sheet-title{text-align:center;font-size:20px;font-weight:700;color:#FFD500;margin-bottom:24px;}
-.pay-from{display:flex;align-items:center;gap:16px;padding:16px;background:rgba(255,255,255,0.07);border-radius:16px;}
-.mori-logo{width:50px;height:50px;border-radius:14px;}
-.amount-big{text-align:center;font-size:48px;font-weight:700;color:#FFD500;margin:20px 0;}
-.amount-small{text-align:center;font-size:18px;opacity:0.7;margin-bottom:20px;}
-.burn-info{text-align:center;margin:20px 0;font-size:16px;color:#ff6b35;}
-.pay-btn{width:calc(100% - 40px);margin:20px auto 0;background:linear-gradient(135deg,#FFD500,#ccaa00);color:#000;font-size:18px;font-weight:700;padding:18px;border:none;border-radius:18px;box-shadow:0 8px 20px rgba(255,213,0,0.4);cursor:pointer;}
-.pay-later{text-align:center;margin-top:20px;color:#999;font-size:14px;}
-</style>
-
-<!-- Скандер с настоящей камерой -->
+<!-- === СКРЫТЫЕ ЭЛЕМЕНТЫ === -->
 <div id="scanner" class="scanner-overlay">
     <div class="scanner-box">
         <video id="video" autoplay playsinline muted></video>
@@ -291,14 +1070,10 @@
     </div>
     <div class="scanner-text">Сканирование QR-кода...</div>
 </div>
-
-<!-- Платёжный лист — новая версия, без конфликтов -->
 <div id="paymentSheet" class="mori-pay-sheet">
     <div class="mori-handle"></div>
     <div class="mori-content">
-
         <h2 class="mori-title">Получен платёж</h2>
-
         <div class="mori-sender">
             <img src="https://www.mexc.com/api/file/download/F20250705153943960fdyewuNgmAyU77" class="mori-icon">
             <div>
@@ -306,221 +1081,436 @@
                 <div class="mori-name">Mori Wallet</div>
             </div>
         </div>
-
-        <div class="mori-amount">
-            171.0 ₽
-            <span class="mori-usd">≈ $1.78</span>
-        </div>
-
+        <div class="mori-amount">171.0 ₽<span class="mori-usd">≈ $2.21</span></div>
         <div class="mori-row">
             <span class="mori-gray">Курс обмена</span>
-            <span>1 MORI <span class="arrow">→</span> 1.50 ₽</span>
+            <span>1 MORI <span class="arrow">→</span> <span id="exchangeRate">1,01</span> ₽</span>
         </div>
-
-       
-
         <div class="mori-coin">
             <img src="https://www.mexc.com/api/file/download/F20250705153943960fdyewuNgmAyU77" class="mori-coin-icon">
             <div class="mori-coin-info">
                 <div class="mori-coin-name">MORI</div>
                 <div class="mori-balance">Баланс: 48 200 MORI</div>
             </div>
-            <div class="mori-coin-amount">114 MORI</div>
+            <div class="mori-coin-amount">169.31 MORI</div>
             <i class="fas fa-chevron-right mori-arrow"></i>
         </div>
-
         <div class="mori-row mori-total">
             <span>Итого</span>
-            <span class="bold">114.57 MORI</span>
+            <span class="bold">170.16 MORI</span>
         </div>
-
         <div class="mori-row mori-burn">
             <span>Комиссия (сжигается)</span>
-            <span><i class="fas fa-fire"></i> 0.57 MORI</span>
+            <span><i class="fas fa-fire"></i> 0.85 MORI</span>
         </div>
-
         <button class="mori-pay-btn" id="payNow">Оплатить 171 ₽</button>
-
         <div class="mori-auto">Автоматическое списание через <span id="timer">59</span> сек</div>
     </div>
 </div>
-
-<style>
-/* Только для этого листа — префикс mori- → 100% без конфликтов */
-.mori-pay-sheet {
-    position: fixed;
-    bottom: -100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 420px;
-    background: #111;
-    border-radius: 28px 28px 0 0;
-    padding: 16px 20px calc(120px + env(safe-area-inset-bottom));
-    z-index: 1000;
-    transition: bottom .65s cubic-bezier(0.16,1,0.3,1);
-    box-shadow: 0 -20px 50px rgba(0,0,0,0.9);
-}
-
-.mori-handle {
-    width: 40px;
-    height: 5px;
-    background: rgba(255,213,0,.4);
-    border-radius: 3px;
-    margin: 0 auto 20px;
-}
-
-.mori-title {
-    text-align: center;
-    font-size: 20px;
-    font-weight: 700;
-    color: #FFD500;
-    margin-bottom: 24px;
-}
-
-.mori-sender {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px;
-    background: rgba(255,255,255,0.07);
-    border-radius: 16px;
-    margin-bottom: 10px;
-}
-
-.mori-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 14px;
-}
-
-.mori-label {
-    font-size: 15px;
-    opacity: 0.8;
-}
-
-.mori-name {
-    font-weight: 700;
-    font-size: 17px;
-}
-
-.mori-amount {
-    text-align: center;
-    font-size: 48px;
-    font-weight: 800;
-    color: #FFD500;
-    margin: 20px 0 16px;
-}
-
-.mori-usd {
-    font-size: 17px;
-    color: #888;
-    margin-left: 12px;
-}
-
-.mori-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 11px 16px;
-    margin: 8px 0;
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
-    font-size: 15px;
-}
-
-.mori-gray { opacity: 0.7; font-size: 14px; }
-.arrow { opacity: 0.5; margin: 0 6px; }
-.mori-small { font-size: 13px; background: none; padding: 6px 16px; opacity: 0.8; }
-
-.mori-coin {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px;
-    background: rgba(255,255,255,0.07);
-    border-radius: 16px;
-    margin: 20px 0;
-}
-
-.mori-coin-icon { width: 44px; height: 44px; border-radius: 12px; }
-.mori-coin-info { flex: 1; }
-.mori-coin-name { font-weight: 700; font-size: 16px; }
-.mori-balance { font-size: 13px; opacity: 0.7; margin-top: 2px; }
-.mori-coin-amount { font-weight: 700; color: #FFD500; font-size: 17px; }
-.mori-arrow { opacity: 0.5; }
-
-.mori-total { font-size: 16px; font-weight: 600; background: rgba(255,213,0,0.07); }
-.mori-burn { color: #ff6b35; background: rgba(255,107,53,0.08); }
-
-.bold { font-weight: 700; }
-
-.mori-pay-btn {
-    width: 100%;
-    background: linear-gradient(135deg,#FFD500,#ccaa00);
-    color: #000;
-    font-size: 18px;
-    font-weight: 700;
-    padding: 19px;
-    border: none;
-    border-radius: 18px;
-    margin-top: 12px;
-    box-shadow: 0 8px 22px rgba(255,213,0,0.45);
-}
-
-.mori-auto {
-    text-align: center;
-    margin-top: 22px;
-    color: #888;
-    font-size: 14px;
-}
-</style>
-
+<div id="successModal" class="success-modal">
+    <div class="success-wrapper">
+        <div class="success-checkmark">
+            <svg viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="54" fill="none" stroke="#FFD500" stroke-width="8" opacity="0.3"/>
+                <polyline points="32,60 52,80 88,40" fill="none" stroke="#FFD500" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" class="checkmark-path"/>
+            </svg>
+        </div>
+        <h2 class="success-title">Операция успешна!</h2>
+        <div class="success-operation" id="successOperationText">Пополнение выполнено</div>
+        <div class="success-amount" id="successAmount">+5 000 ₽</div>
+        <div class="success-details">
+            <div class="success-burn" id="successBurnText"><i class="fas fa-fire" style="color:#ff6b35;"></i> Сожжено 0.85 MORI</div>
+        </div>
+        <button id="closeSuccess" class="success-btn"><span>Готово</span></button>
+    </div>
+</div>
+<div id="betaInfoModal" class="beta-info-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);z-index:9999;display:none;align-items:center;justify-content:center;">
+    <div style="background:#111;border-radius:24px;padding:30px 24px;max-width:340px;width:90%;text-align:center;">
+        <h3 style="color:#FFD500;font-size:20px;margin-bottom:16px;">Бета-версия</h3>
+        <div style="color:#aaa;font-size:15px;line-height:1.5;margin-bottom:24px;">
+            Ты используешь бета-версию MORI Wallet.<br>
+            Некоторые функции могут работать нестабильно.<br>
+            Спасибо, что помогаешь нам становиться лучше!
+        </div>
+        <button id="closeBetaInfo" class="profile-btn">Понятно</button>
+    </div>
+</div>
+<div id="ratingModal" class="rating-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);z-index:9999;display:none;align-items:center;justify-content:center;">
+    <div style="background:#111;border-radius:24px;padding:24px;max-width:360px;width:90%;max-height:80vh;overflow:auto;">
+        <h3 style="color:#FFD500;font-size:20px;text-align:center;margin-bottom:20px;">ТОП-50 по сжиганию</h3>
+        <div id="ratingList"></div>
+        <button id="closeRating" class="profile-btn" style="margin-top:20px;">Закрыть</button>
+    </div>
+</div>
 <script>
-let stream = null;
+let prices = { mori: 1.01, usdt: 77.35, sol: 9956 };
+let balanceVisible = true;
+let currentCurrency = 'RUB';
+const USER_BURN = 4845;
+let swapDirection = 'MORI_to_USDT';
+let currentSendMethod = 'address';
 
-// Запуск камеры и сканера
-document.querySelector('.qr-btn').addEventListener('click', async () => {
-    document.getElementById('scanner').style.display = 'flex';
+function randomAddress() {
+    const chars = '0123456789abcdef';
+    let addr = '0x';
+    for (let i = 0; i < 4; i++) addr += chars[Math.floor(Math.random() * 16)];
+    addr += '...';
+    for (let i = 0; i < 4; i++) addr += chars[Math.floor(Math.random() * 16)];
+    return addr;
+}
 
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "environment", width: { ideal: 1280 }, height: { ideal: 720 } }
+function generateRankings() {
+    const rankings = [];
+    for (let i = 0; i < 49; i++) {
+        rankings.push({
+            burn: Math.floor(5000 - i * 80 + Math.random() * 100),
+            addr: randomAddress()
         });
-        const video = document.getElementById('video');
-        video.srcObject = stream;
-    } catch (err) {
-        alert('Не удалось получить доступ к камере');
-        document.getElementById('scanner').style.display = 'none';
-        return;
     }
+    rankings.push({ burn: USER_BURN, addr: '0x742...A3F9' });
+    rankings.sort((a, b) => b.burn - a.burn);
+    const userRank = rankings.findIndex(r => r.burn === USER_BURN) + 1;
+    document.getElementById('userRank').textContent = userRank;
+    const list = document.getElementById('ratingList');
+    list.innerHTML = rankings.slice(0, 50).map((item, i) => {
+        const isUser = item.burn === USER_BURN;
+        return `
+            <div class="rating-item ${isUser ? 'rating-you' : ''}">
+                <div class="rating-pos">${i+1}.</div>
+                <div class="rating-address">${item.addr}</div>
+                <div class="rating-amount">${item.burn.toLocaleString('ru-RU')}</div>
+            </div>
+        `;
+    }).join('');
+}
 
-    // Через 7 секунд закрываем сканер и показываем платёжку (как у тебя было)
-    setTimeout(() => {
-        document.getElementById('scanner').style.display = 'none';
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-            stream = null;
+function updateBalanceDisplay() {
+    const totalRub = 89554;
+    const totalUsd = (totalRub / 77.35).toFixed(2);
+    const amountEl = document.getElementById('balanceAmount');
+    const btn = document.getElementById('currencyBtn');
+    if (balanceVisible) {
+        if (currentCurrency === 'RUB') {
+            amountEl.innerHTML = `${totalRub.toLocaleString('ru-RU').replace(',', '&nbsp;')} <span class="cur-btn" id="currencyBtn">RUB</span>`;
+        } else {
+            amountEl.innerHTML = `${totalUsd} <span class="cur-btn" id="currencyBtn">USD</span>`;
         }
-        document.getElementById('paymentSheet').style.bottom = '0';
+    } else {
+        amountEl.innerHTML = `****&nbsp;**** <span class="cur-btn" id="currencyBtn">${currentCurrency}</span>`;
+    }
+    // Re-attach event
+    setTimeout(() => {
+        document.getElementById('currencyBtn').addEventListener('click', () => {
+            document.getElementById('currencyDropdown').style.display = 
+                document.getElementById('currencyDropdown').style.display === 'block' ? 'none' : 'block';
+        });
+    }, 10);
+}
 
-        let sec = 59;
-        const timer = document.getElementById('timer');
-        const int = setInterval(() => {
-            sec--;
-            timer.textContent = sec;
-            if (sec <= 0) clearInterval(int);
-        }, 1000);
-    }, 7000);
+function calculateSwap() {
+    const fromInput = document.getElementById('fromAmount');
+    const toInput = document.getElementById('toAmount');
+    const fromVal = parseFloat(fromInput.value) || 0;
+    let toVal, rateText, feeText;
+    if (swapDirection === 'MORI_to_USDT') {
+        toVal = (fromVal * prices.mori / prices.usdt);
+        rateText = `1 MORI = ${(prices.mori / prices.usdt).toFixed(5)} USDT`;
+        const fee = (toVal * 0.002).toFixed(4);
+        feeText = `0.2% (${fee} USDT сжигается)`;
+        document.getElementById('fromRub').textContent = `≈ ${(fromVal * prices.mori).toFixed(2)} ₽`;
+        document.getElementById('toRub').textContent = `≈ ${(toVal * prices.usdt).toFixed(2)} ₽`;
+    } else {
+        toVal = (fromVal * prices.usdt / prices.mori);
+        rateText = `1 USDT = ${(prices.usdt / prices.mori).toFixed(2)} MORI`;
+        const fee = (toVal * 0.002).toFixed(2);
+        feeText = `0.2% (${fee} MORI сжигается)`;
+        document.getElementById('fromRub').textContent = `≈ ${(fromVal * prices.usdt).toFixed(2)} ₽`;
+        document.getElementById('toRub').textContent = `≈ ${(toVal * prices.mori).toFixed(2)} ₽`;
+    }
+    toInput.value = toVal.toFixed(swapDirection === 'MORI_to_USDT' ? 4 : 2);
+    document.getElementById('swapRate').textContent = rateText;
+    document.getElementById('swapFee').textContent = feeText;
+}
+
+function calculateSendFee() {
+    const amount = parseFloat(document.getElementById('sendAmountInput').value) || 0;
+    const fee = (amount * 0.0057 / prices.mori).toFixed(2);
+    document.getElementById('sendFee').textContent = fee;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Currency dropdown
+    document.getElementById('currencyBtn').addEventListener('click', () => {
+        document.getElementById('currencyDropdown').style.display = 
+            document.getElementById('currencyDropdown').style.display === 'block' ? 'none' : 'block';
+    });
+    document.querySelectorAll('.currency-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            currentCurrency = opt.dataset.currency;
+            document.querySelectorAll('.currency-option').forEach(o => o.classList.remove('active'));
+            opt.classList.add('active');
+            document.getElementById('currencyDropdown').style.display = 'none';
+            updateBalanceDisplay();
+        });
+    });
+
+    // Deposit amounts
+    document.querySelectorAll('[data-amount]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById('depositAmount').value = btn.dataset.amount;
+        });
+    });
+
+    // Send method switch
+    document.querySelectorAll('.send-method-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.send-method-item').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSendMethod = btn.dataset.type;
+            const input = document.getElementById('sendToInput');
+            switch(currentSendMethod) {
+                case 'address':
+                    input.placeholder = 'Адрес кошелька';
+                    break;
+                case 'contact':
+                    input.placeholder = 'Имя контакта';
+                    break;
+                case 'qr':
+                    input.placeholder = 'Сканируйте QR';
+                    break;
+            }
+        });
+    });
+
+    // Send fee calc
+    document.getElementById('sendAmountInput').addEventListener('input', calculateSendFee);
+
+    // Swap direction
+    document.getElementById('swapDirection').addEventListener('click', () => {
+        swapDirection = swapDirection === 'MORI_to_USDT' ? 'USDT_to_MORI' : 'MORI_to_USDT';
+        const fromIcon = document.getElementById('swapFromIcon');
+        const toIcon = document.getElementById('swapToIcon');
+        const fromName = document.getElementById('swapFromName');
+        const toName = document.getElementById('swapToName');
+        const fromAmount = document.getElementById('fromAmount').value;
+        const toAmount = document.getElementById('toAmount').value;
+        document.getElementById('fromAmount').value = toAmount;
+        document.getElementById('toAmount').value = fromAmount;
+        if (swapDirection === 'USDT_to_MORI') {
+            fromIcon.src = 'https://img.icons8.com/color/48/tether--v2.png';
+            toIcon.src = 'https://www.mexc.com/api/file/download/F20250705153943960fdyewuNgmAyU77';
+            fromName.textContent = 'USDT';
+            toName.textContent = 'MORI';
+        } else {
+            fromIcon.src = 'https://www.mexc.com/api/file/download/F20250705153943960fdyewuNgmAyU77';
+            toIcon.src = 'https://img.icons8.com/color/48/tether--v2.png';
+            fromName.textContent = 'MORI';
+            toName.textContent = 'USDT';
+        }
+        calculateSwap();
+    });
+    document.getElementById('fromAmount').addEventListener('input', calculateSwap);
+    document.getElementById('toAmount').addEventListener('input', calculateSwap);
+
+    // Sell method
+    document.querySelectorAll('.sell-method').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sell-method').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const type = btn.dataset.type;
+            document.getElementById('sellCardNumber').style.display = type === 'card' ? 'block' : 'none';
+            document.getElementById('sellSbpPhone').style.display = type === 'sbp' ? 'block' : 'none';
+        });
+    });
+
+    // Services
+    document.querySelectorAll('[data-service]').forEach(item => {
+        item.addEventListener('click', () => {
+            const service = item.dataset.service;
+            let title = '', placeholder = '';
+            switch(service) {
+                case 'casino': title = 'MORI Casino'; placeholder = 'ID профиля'; break;
+                case 'vpn': title = 'MORI VPN'; placeholder = 'ID аккаунта'; break;
+                case 'mobile': title = 'Мобильная связь'; placeholder = 'Номер телефона'; break;
+                case 'sbplink': title = 'СБП-ссылка'; placeholder = 'Ссылка'; break;
+            }
+            const value = prompt(`Введите ${placeholder} для ${title}`);
+            if (value) {
+                document.getElementById('successOperationText').textContent = `Пополнение ${title}`;
+                document.getElementById('successAmount').textContent = `+${value} MORI`;
+                document.getElementById('successBurnText').innerHTML = `<i class="fas fa-fire" style="color:#ff6b35;"></i> Сожжено ${(value * 0.002).toFixed(2)} MORI`;
+                document.getElementById('successModal').style.display = 'flex';
+            }
+        });
+    });
+
+    // Submit buttons → dynamic success modal
+    document.getElementById('submitDeposit').addEventListener('click', () => {
+        const amount = parseFloat(document.getElementById('depositAmount').value) || 5000;
+        document.getElementById('successOperationText').textContent = 'Пополнение выполнено';
+        document.getElementById('successAmount').textContent = `+${amount.toLocaleString('ru-RU')} ₽`;
+        document.getElementById('successBurnText').textContent = '';
+        document.getElementById('successModal').style.display = 'flex';
+    });
+
+    document.getElementById('sendSubmit').addEventListener('click', () => {
+        const amount = parseFloat(document.getElementById('sendAmountInput').value) || 171;
+        const fee = (amount * 0.0057 / prices.mori).toFixed(2);
+        document.getElementById('successOperationText').textContent = 'Перевод отправлен';
+        document.getElementById('successAmount').textContent = `−${amount.toLocaleString('ru-RU')} ₽`;
+        document.getElementById('successBurnText').innerHTML = `<i class="fas fa-fire" style="color:#ff6b35;"></i> Сожжено ${fee} MORI`;
+        document.getElementById('successModal').style.display = 'flex';
+    });
+
+    document.getElementById('swapSubmit').addEventListener('click', () => {
+        const fromAmount = parseFloat(document.getElementById('fromAmount').value) || 100;
+        const feeAmount = (fromAmount * 0.002).toFixed(2);
+        document.getElementById('successOperationText').textContent = 'Обмен выполнен';
+        document.getElementById('successAmount').textContent = `Обмен ${fromAmount} ${swapDirection.includes('MORI') ? 'MORI' : 'USDT'}`;
+        document.getElementById('successBurnText').innerHTML = `<i class="fas fa-fire" style="color:#ff6b35;"></i> Сожжено ${feeAmount} ${swapDirection.includes('MORI') ? 'MORI' : 'USDT'}`;
+        document.getElementById('successModal').style.display = 'flex';
+    });
+
+    document.getElementById('sellSubmit').addEventListener('click', () => {
+        const amount = parseFloat(document.getElementById('sellAmount').value) || 100;
+        const feeAmount = (amount * 0.002).toFixed(2);
+        document.getElementById('successOperationText').textContent = 'Продажа выполнена';
+        document.getElementById('successAmount').textContent = `−${amount} MORI`;
+        document.getElementById('successBurnText').innerHTML = `<i class="fas fa-fire" style="color:#ff6b35;"></i> Сожжено ${feeAmount} MORI`;
+        document.getElementById('successModal').style.display = 'flex';
+    });
+
+    // Pay sheet
+    document.getElementById('payNow').addEventListener('click', () => {
+        document.getElementById('paymentSheet').style.bottom = '-100vh';
+        setTimeout(() => {
+            document.getElementById('successOperationText').textContent = 'Платёж получен';
+            document.getElementById('successAmount').textContent = '+171.0 ₽';
+            document.getElementById('successBurnText').innerHTML = `<i class="fas fa-fire" style="color:#ff6b35;"></i> Сожжено 0.85 MORI`;
+            document.getElementById('successModal').style.display = 'flex';
+        }, 600);
+    });
+
+    document.getElementById('closeSuccess').addEventListener('click', () => {
+        document.getElementById('successModal').style.display = 'none';
+    });
+
+    // Navigation
+    const actionCards = document.querySelectorAll('.action-card');
+    actionCards[0]?.addEventListener('click', () => switchScreen('depositScreen'));
+    actionCards[1]?.addEventListener('click', () => switchScreen('sendScreen'));
+    actionCards[2]?.addEventListener('click', () => switchScreen('swapScreen'));
+    actionCards[3]?.addEventListener('click', () => switchScreen('sellScreen'));
+    document.querySelectorAll('.nav-item[data-screen]').forEach(item => {
+        item.addEventListener('click', () => switchScreen(item.dataset.screen));
+    });
+    document.getElementById('usernameClickable').addEventListener('click', () => switchScreen('profileScreen'));
+
+    // Balance toggle
+    document.getElementById('toggleBalance').addEventListener('click', () => {
+        balanceVisible = !balanceVisible;
+        const icon = document.querySelector('#toggleBalance i');
+        if (balanceVisible) {
+            icon.className = 'fas fa-eye';
+        } else {
+            icon.className = 'fas fa-eye-slash';
+        }
+        updateBalanceDisplay();
+    });
+
+    // Modals
+    document.getElementById('betaInfoBtn').addEventListener('click', () => {
+        document.getElementById('betaInfoModal').style.display = 'flex';
+    });
+    document.getElementById('closeBetaInfo').addEventListener('click', () => {
+        document.getElementById('betaInfoModal').style.display = 'none';
+    });
+    document.getElementById('openRating').addEventListener('click', () => {
+        generateRankings();
+        document.getElementById('ratingModal').style.display = 'flex';
+    });
+    document.getElementById('closeRating').addEventListener('click', () => {
+        document.getElementById('ratingModal').style.display = 'none';
+    });
+
+    // QR scanner
+    let stream = null;
+    document.querySelector('.qr-btn').addEventListener('click', async () => {
+        const scanner = document.getElementById('scanner');
+        scanner.style.display = 'flex';
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+            document.getElementById('video').srcObject = stream;
+        } catch (err) {
+            alert('❌ Доступ к камере запрещён');
+            scanner.style.display = 'none';
+            return;
+        }
+        setTimeout(() => {
+            scanner.style.display = 'none';
+            if (stream) stream.getTracks().forEach(t => t.stop());
+            document.getElementById('paymentSheet').style.display = 'block';
+            document.getElementById('paymentSheet').style.bottom = '0';
+            let sec = 59;
+            const timer = document.getElementById('timer');
+            const intv = setInterval(() => {
+                sec--;
+                timer.textContent = sec;
+                if (sec <= 0) clearInterval(intv);
+            }, 1000);
+        }, 7000);
+    });
+
+    // Card buttons
+    let cardNumVisible = true;
+    document.getElementById('showCardNumber2').addEventListener('click', () => {
+        const el = document.getElementById('cardNumberDisplay');
+        if (cardNumVisible) {
+            el.textContent = '**** **** **** 3456';
+            document.getElementById('showCardNumber2').textContent = 'Скрыть номер';
+        } else {
+            el.textContent = '1234 5678 9012 3456';
+            document.getElementById('showCardNumber2').textContent = 'Показать номер';
+        }
+        cardNumVisible = !cardNumVisible;
+    });
+    document.getElementById('copyCard2').addEventListener('click', async () => {
+        const btn = document.getElementById('copyCard2');
+        try {
+            await navigator.clipboard.writeText('1234567890123456');
+            btn.textContent = 'Скопировано!';
+            setTimeout(() => btn.textContent = 'Копировать', 1500);
+        } catch (e) {
+            btn.textContent = 'Ошибка';
+            setTimeout(() => btn.textContent = 'Копировать', 1500);
+        }
+    });
+
+    // General input cleanup
+    document.querySelectorAll('input[type="text"]').forEach(input => {
+        if (input.getAttribute('inputmode') !== 'decimal') {
+            input.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^\w\s\-\.\@\+\(\)\#]/g, '');
+            });
+        } else {
+            input.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^0-9.,]/g, '').replace(',', '.');
+            });
+        }
+    });
+
+    // Init
+    calculateSwap();
+    updateBalanceDisplay();
 });
 
-// Кнопка оплаты
-document.getElementById('payNow').addEventListener('click', () => {
-    alert('Оплата 171 ₽ прошла успешно!\nСожжено 0.57 MORI');
-    document.getElementById('paymentSheet').style.bottom = '-100%';
-});
+function switchScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    const activeNavItem = document.querySelector(`[data-screen="${screenId}"]`);
+    if (activeNavItem) activeNavItem.classList.add('active');
+}
 </script>
-
-
 </body>
 </html>
