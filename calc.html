@@ -820,7 +820,7 @@
       const priceUSD = market.current_price?.usd || 0;
       const raw = tokenInput.value.replace(',', '.').trim();
       const amount = parseFloat(raw) || 0;
-      if (amount <= 0) { alert('Введите корректное значение'); return; }
+      if (amount <= 0) { alert('Введите количество токенов'); return; }
 
       let totalUSD, totalRUB, moriFromXP = 0;
       if (mode === 'MORI') {
