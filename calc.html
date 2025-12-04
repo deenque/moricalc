@@ -413,9 +413,12 @@
       <div class="chart-loading" id="chartLoading">Загрузка графика...</div>
     </div>
     <div class="price-links">
-      <a href="https://www.coingecko.com/en/coins/mori-coin" class="price-link" target="_blank">CoinGecko</a>
-      <a id="websiteLink" href="#" class="price-link" target="_blank" style="display:none;">Сайт</a>
-      <a id="twitterLink" href="#" class="price-link" target="_blank" style="display:none;">Twitter</a>
+    <a id="websiteLink" href=""https://morico.in/" class="price-link" target="_blank" style="display:none;">Оф.сайт</a>
+    <a href="https://mori.win" class="price-link" target="_blank">Casino</a>
+<a href="https://morivpn.com" class="price-link" target="_blank">VPN</a>
+<a href="https://moristake.in" class="price-link" target="_blank">Staking</a>
+      <a href="https://jup.ag/tokens/8ZHE4ow1a2jjxuoMfyExuNamQNALv5ekZhsBn5nMDf5e" class="price-link" target="_blank">Jup.ag</a>
+      <a id="twitterLink" href="https://twitter.com/moricoinmeme" class="price-link" target="_blank" style="display:none;">X</a>
     </div>
     <p style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:20px;">
       График: свечи за 30 дней (TradingView). Данные обновляются автоматически.
@@ -573,6 +576,8 @@
       };
       document.head.appendChild(script);
     }
+    
+    
 
     async function loadCourse(retry = 0) {
       const max = 3;
@@ -821,7 +826,7 @@
       const priceUSD = market.current_price?.usd || 0;
       const raw = tokenInput.value.replace(',', '.').trim();
       const amount = parseFloat(raw) || 0;
-      if (amount <= 0) { alert('Введите количество ваших токенов'); return; }
+      if (amount <= 0) { alert('Введите корректное значение'); return; }
 
       let totalUSD, totalRUB, moriFromXP = 0;
       if (mode === 'MORI') {
