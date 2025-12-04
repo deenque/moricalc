@@ -350,8 +350,18 @@
 
     <!-- Главная (покупка) -->
     <div class="page buy-page" id="buyPage">
+    
+
+    
       <h2>Купить $MORI</h2>
       <br>
+  
+    <div class="price-header">
+      <img id="coinLogo" src="" alt="$MORI" style="display:none;">
+          <div class="current-price-big" id="currentPriceBig">Загрузка...</div>
+ </div>
+
+      
       <div class="input-group">
         <label for="buyInput"style="display:block; text-align:center;">Хочу купить на:</label>  
         <input type="text" id="buyInput" class="buy-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
@@ -377,6 +387,8 @@
         <div id="buyResultMori"></div>
         <div id="buyResultFiat"></div>
       </div>
+      
+ 
       
     </div>
 
@@ -891,7 +903,7 @@
       const priceUSD = market.current_price?.usd || 0;
       const raw = buyInput.value.replace(',', '.').trim();
       const amountFiat = parseFloat(raw) || 0;
-      if (amountFiat <= 0) { alert('Введите количество ваших токенов'); return; }
+      if (amountFiat <= 0) { alert('Введите корректное значение'); return; }
 
       let amountInUSD = buyCurrency === 'USD' ? amountFiat : (amountFiat / usdToRub);
       let moriAmount = amountInUSD / priceUSD;
@@ -950,6 +962,8 @@ async function loadData() {
 
 loadData();
 setInterval(loadData, 10000);
+
+
 
 
 </script>
