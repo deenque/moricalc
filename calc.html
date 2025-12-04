@@ -266,7 +266,7 @@
       <h2>Прогноз дохода $MORI</h2>
       <br>
       <div class="input-group">
-        <label id="inputLabel">Количество ваших токенов:</label>
+        <label  style="display:block; text-align:center;" id="inputLabel">Количество ваших токенов:</label>
         <div class="mode-toggle">
           <button id="btnMORI" class="active">$MORI</button>
           <button id="btnXP">XP</button>
@@ -276,7 +276,7 @@
       </div>
  
       <div class="input-group" id="priceGroup">
-        <label>Желаемая цена $MORI:</label>
+<label style="display:block; text-align:center;">Желаемая цена $MORI:</label>
         <div class="currency-toggle" id="currencyToggle">
           <button id="btnUSD" class="active">
             <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USD"> USD
@@ -305,11 +305,18 @@
         <div id="resultTertiary"></div>
       </div>
 
-      <!-- Stake -->
-      <div class="stake-section" id="stakeSection">
-        <div class="stake-title">Стейкинг доход</div>
+<!-- Stake -->
+<div class="stake-section" id="stakeSection">
+  <!-- НОВЫЙ БЛОК: Всего застейкано -->
+  <div style="text-align:center; margin-bottom:16px; padding:10px; background:rgba(255,213,0,0.08); border-radius:12px; border:1px solid rgba(255,213,0,0.2);">
+    <div style="font-size:12px; color:rgba(255,255,255,0.7);">Всего застейкано</div>
+    <div id="stakeTotalStaked" style="font-size:18px; font-weight:700; color:#FFD500; margin-top:4px;">Загрузка...</div>
+  </div>
+  
+
+  <div class="stake-title">Расчет стейкинг дохода</div>
         <div class="input-group">
-          <label>Сумма MORI</label>
+       <label style="display:block; text-align:center;">Сумма $MORI:</label>
           <input type="text" id="stakeAmount" class="token-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
         </div>
         <div class="stake-title">Срок стейкинга</div>
@@ -346,7 +353,7 @@
       <h2>Купить $MORI</h2>
       <br>
       <div class="input-group">
-        <label for="buyInput">Хочу купить на:</label>
+        <label for="buyInput"style="display:block; text-align:center;">Хочу купить на:</label>  
         <input type="text" id="buyInput" class="buy-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
       </div>
       <div class="buy-currency-toggle" id="buyCurrencyToggle">
@@ -370,7 +377,12 @@
         <div id="buyResultMori"></div>
         <div id="buyResultFiat"></div>
       </div>
+      
     </div>
+
+
+
+
 
   <!-- Цена -->
 <div class="page price-page" id="pricePage">
@@ -772,6 +784,7 @@
     }
 
     // Stake
+    
     const stakeAmount = document.getElementById('stakeAmount');
     const stakeResult = document.getElementById('stakeResult');
     const stakeInitial = document.getElementById('stakeInitial');
@@ -813,6 +826,8 @@
       document.getElementById('unlockDate').textContent = formattedDate;
       stakeResult.style.display = 'block';
     }
+    
+    
 
     // Кнопки валют в калькуляторе
     const btnUSD = document.getElementById('btnUSD');
@@ -907,6 +922,7 @@ async function loadData() {
       el.innerHTML = `<strong>${amount}</strong> $MORI`;
       el.style.color = '#FFD500';        // ← ПРИНУДИТЕЛЬНО золотой
       el.style.fontWeight = 'bold';
+      document.getElementById('stakeTotalStaked').textContent = `${amount} $MORI`;
     } else {
       throw new Error('Нет данных');
     }
@@ -934,8 +950,6 @@ async function loadData() {
 
 loadData();
 setInterval(loadData, 10000);
-
-
 
 
 </script>
