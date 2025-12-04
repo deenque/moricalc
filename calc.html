@@ -277,6 +277,11 @@
  
       <div class="input-group" id="priceGroup">
 <label style="display:block; text-align:center;">Желаемая цена $MORI:</label>
+<div class="comment">Цена 1 MORI в выбранной валюте</div>
+        <p style="font-size:12px;color:rgba(255,255,255,0.6);margin:4px 0 0;text-align:center;line-height:1.2;">
+          (выберите валюту, нажав на кнопку RUB или USD)
+        </p>
+      </div>
         <div class="currency-toggle" id="currencyToggle">
           <button id="btnUSD" class="active">
             <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="USD"> USD
@@ -286,14 +291,11 @@
           </button>
         </div>
         <div class="price-input-row">
+          
           <input type="text" step="0.001" id="tokenPrice" class="token-price-input" placeholder="0,00" inputmode="decimal" enterkeyhint="done" autocomplete="off">
           <div class="price-btn" id="priceBtn">Текущая цена</div>
         </div>
-        <div class="comment">Цена 1 MORI в выбранной валюте</div>
-        <p style="font-size:12px;color:rgba(255,255,255,0.6);margin:4px 0 0;text-align:center;line-height:1.2;">
-          (выберите валюту, нажав на кнопку RUB или USD)
-        </p>
-      </div>
+        
       <p class="xp-info" id="xpInfo">Курс: 1 $MORI = 50 XP</p>
       <button class="btn" id="calcBtn">Рассчитать</button>
       <div class="course-info" id="courseInfo">
