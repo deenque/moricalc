@@ -313,46 +313,41 @@
     <div style="font-size:12px; color:rgba(255,255,255,0.7);">Всего застейкано</div>
     <div id="stakeTotalStaked" style="font-size:18px; font-weight:700; color:#FFD500; margin-top:4px;">Загрузка...</div>
   </div>
+  
 
   <div class="stake-title">Расчет стейкинг дохода</div>
-
-  <div class="input-group">
-    <label style="display:block; text-align:center;">Сумма $MORI:</label>
-    <input type="text" id="stakeAmount" class="token-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
-  </div>
-
-  <div class="stake-title">Срок стейкинга</div>
-  <div class="stake-subtitle">(максимум 12 месяцев)</div>
-
-  <div class="stake-buttons">
-    <button class="stake-btn active" data-months="1" data-apr="15">1 месяц<span>15% APR (XP: 22.5%)</span></button>
-    <button class="stake-btn" data-months="3" data-apr="30">3 месяца<span>30% APR (XP: 45%)</span></button>
-    <button class="stake-btn" data-months="6" data-apr="60">6 месяцев<span>60% APR (XP: 90%)</span></button>
-    <button class="stake-btn" data-months="12" data-apr="100">12 месяцев<span>100% APR (XP: 150%)</span></button>
-  </div>
-
-  <div class="stake-result" id="stakeResult">
-    <div class="stake-result-wrapper">
-      <div class="stake-label">Вы стейкаете</div>
-      <div class="stake-initial-big" id="stakeInitial">1 000 MORI</div>
-
-      <div class="stake-label">Ваш доход за выбранный период</div>
-      <div class="stake-profit-big" id="stakeProfit">+1 000 MORI</div>
-
-      <div class="stake-total-wrapper">
-        <div class="stake-label-total">Итого на балансе через</div>
-        <div id="stakePeriodSelected">12 месяцев</div>
-        <div class="stake-total-big" id="stakeTotal">2 000 MORI</div>
-      </div>
-
-      <div class="stake-unlock-date">
-        <div class="unlock-label">Дата разблокировки:</div>
-        <div class="unlock-date-big" id="unlockDate">18 декабря 2025</div>
+        <div class="input-group">
+       <label style="display:block; text-align:center;">Сумма $MORI:</label>
+          <input type="text" id="stakeAmount" class="token-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
+        </div>
+        <div class="stake-title">Срок стейкинга</div>
+        <div class="stake-subtitle">(максимум 12 месяцев)</div>
+        <div class="stake-buttons">
+          <button class="stake-btn active" data-months="1" data-apr="15">1 месяц<span>15% APR (XP: 22.5%)</span></button>
+          <button class="stake-btn" data-months="3" data-apr="30">3 месяца<span>30% APR (XP: 45%)</span></button>
+          <button class="stake-btn" data-months="6" data-apr="60">6 месяцев<span>60% APR (XP: 90%)</span></button>
+          <button class="stake-btn" data-months="12" data-apr="100">12 месяцев<span>100% APR (XP: 150%)</span></button>
+        </div>
+        <div class="stake-result" id="stakeResult">
+          <div class="stake-result-wrapper">
+            <div class="stake-label">Вы стейкаете</div>
+            <div class="stake-initial-big" id="stakeInitial">1 000 MORI</div>
+            <div class="stake-label">Ваш доход за выбранный период</div>
+            <div class="stake-profit-big" id="stakeProfit">+1 000 MORI</div>
+            <div class="stake-total-wrapper">
+              <div class="stake-label-total">Итого на балансе через</div>
+              <div id="stakePeriodSelected">12 месяцев</div>
+              <div class="stake-total-big" id="stakeTotal">2 000 MORI</div>
+            </div>
+            <div class="stake-unlock-date">
+              <div class="unlock-label">Дата разблокировки:</div>
+              <div class="unlock-date-big" id="unlockDate">18 декабря 2025</div>
+            </div>
+          </div>
+          <a href="https://moristake.in  " class="buy-now-btn staking-btn"" target="_blank">Застейкать</a>
+        </div>
       </div>
     </div>
-    <a href="https://moristake.in" class="buy-now-btn staking-btn" target="_blank">Застейкать</a>
-  </div>
-</div>
 
       
     <!-- Главная (покупка) -->
