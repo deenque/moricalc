@@ -891,7 +891,7 @@
       const priceUSD = market.current_price?.usd || 0;
       const raw = buyInput.value.replace(',', '.').trim();
       const amountFiat = parseFloat(raw) || 0;
-      if (amountFiat <= 0) { alert('Введите корректное значение'); return; }
+      if (amountFiat <= 0) { alert('Введите количество ваших токенов'); return; }
 
       let amountInUSD = buyCurrency === 'USD' ? amountFiat : (amountFiat / usdToRub);
       let moriAmount = amountInUSD / priceUSD;
