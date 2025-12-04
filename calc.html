@@ -224,6 +224,7 @@
     .info-block h3 {color: #FFD500;font-size: 16px;margin-bottom: 8px;text-align: center;}
     .info-block p {font-size: 13px;line-height: 1.4;color: rgba(255,255,255,0.8);}
     .info-link {color: #FFD500;text-decoration: none;}
+
     /* Stake стили */
     .stake-section {display:none;margin-top:30px;}
     .stake-title {font-size:20px;color:#FFD500;text-align:center;margin:20px 0 6px;font-weight:600;}
@@ -271,8 +272,9 @@
           <button id="btnXP">XP</button>
           <button id="btnStake">Stake</button>
         </div>
-        <input type="text" id="tokenInput" class="token-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
+        <input type="text" id="tokenInput" class="token-input" placeholder="Например: 1000" inputmode="numeric" enterkeyhint="done" autocomplete="off">
       </div>
+ 
       <div class="input-group" id="priceGroup">
         <label>Желаемая цена $MORI:</label>
         <div class="currency-toggle" id="currencyToggle">
@@ -284,7 +286,7 @@
           </button>
         </div>
         <div class="price-input-row">
-          <input type="text" step="0.001" id="tokenPrice" class="token-price-input" placeholder="0,00" inputmode="decimal" enterkeyhint="done" autocomplete="off">
+          <input type="text" id="tokenPrice" class="token-price-input" placeholder="0,00" inputmode="decimal" enterkeyhint="done" autocomplete="off">
           <div class="price-btn" id="priceBtn">Текущая цена</div>
         </div>
         <div class="comment">Цена 1 MORI в выбранной валюте</div>
@@ -302,12 +304,13 @@
         <div id="resultSecondary"></div>
         <div id="resultTertiary"></div>
       </div>
+
       <!-- Stake -->
       <div class="stake-section" id="stakeSection">
         <div class="stake-title">Стейкинг доход</div>
         <div class="input-group">
           <label>Сумма MORI</label>
-          <input type="text" id="stakeAmount" class="token-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
+          <input type="text" id="stakeAmount" class="token-input" placeholder="Например: 1000" inputmode="numeric" enterkeyhint="done" autocomplete="off">
         </div>
         <div class="stake-title">Срок стейкинга</div>
         <div class="stake-subtitle">(максимум 12 месяцев)</div>
@@ -337,13 +340,14 @@
         </div>
       </div>
     </div>
+
     <!-- Главная (покупка) -->
     <div class="page buy-page" id="buyPage">
       <h2>Купить $MORI</h2>
       <br>
       <div class="input-group">
         <label for="buyInput">Хочу купить на:</label>
-        <input type="text" id="buyInput" class="buy-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
+        <input type="text" id="buyInput" class="buy-input" placeholder="Например: 1000" inputmode="numeric" enterkeyhint="done" autocomplete="off">
       </div>
       <div class="buy-currency-toggle" id="buyCurrencyToggle">
         <button id="buyBtnRUB" class="active">
@@ -357,14 +361,17 @@
         <button class="btn" id="buyCalcBtn">Рассчитать</button>
         <a href="https://t.me/MoriForum/1321532/1321535" class="buy-now-btn" target="_blank"> Купить</a>
       </div>
+      
       <div class="course-info" id="buyCourseInfo">
         Курс USD/RUB: <span id="buyCourseStatus">Загрузка...</span>
       </div>
+      
       <div class="buy-results" id="buyResultsBlock" style="display:none;">
         <div id="buyResultMori"></div>
         <div id="buyResultFiat"></div>
       </div>
     </div>
+
   <!-- Цена -->
 <div class="page price-page" id="pricePage">
   <h2>Текущая цена $MORI</h2>
@@ -377,11 +384,14 @@
     <div class="current-price-big" id="currentPriceBig">Загрузка...</div>
     <div class="price-change" id="priceChange24h">-</div>
     <div class="price-update" id="priceUpdateTime"></div>
+
+
     <div class="price-stats-grid">
       <div class="price-stat-item"><div class="price-stat-label">Рыночная капитализация</div><div class="price-stat-value" id="marketCap">-</div></div>
       <div class="price-stat-item"><div class="price-stat-label">Объём торгов на биржах (24ч)</div><div class="price-stat-value" id="volume24h">-</div></div>
       <div class="price-stat-item"><div class="price-stat-label">Циркулирующий объём</div><div class="price-stat-value" id="circulatingSupply">-</div></div>
       <div class="price-stat-item"><div class="price-stat-label">Максимальный объём</div><div class="price-stat-value" id="totalSupply">-</div></div>
+
       <!-- Стейкинг -->
       <div class="price-stat-item">
         <div class="price-stat-label">Всего застейкано</div>
@@ -391,12 +401,14 @@
         <div class="price-stat-label">Заблокировано (USD)</div>
         <div class="price-stat-value" id="tvlUsd">Загрузка...</div>
       </div>
+
       <!-- ATH и т.д. -->
       <div class="price-stat-item"><div class="price-stat-label">ATH (макс.все время)</div><div class="price-stat-value" id="ath">-</div></div>
       <div class="price-stat-item"><div class="price-stat-label">ATL (мин.все время)</div><div class="price-stat-value" id="atl">-</div></div>
       <div class="price-stat-item"><div class="price-stat-label">Максимум за 24ч</div><div class="price-stat-value" id="high24h" style="color:#28a745;">-</div></div>
       <div class="price-stat-item"><div class="price-stat-label">Минимум за 24ч</div><div class="price-stat-value" id="low24h" style="color:#dc3545;">-</div></div>
     </div>
+
     <div class="chart-container" id="chartContainer">
       <div class="chart-loading" id="chartLoading">Загрузка графика...</div>
     </div>
@@ -410,6 +422,8 @@
     </p>
   </div>
 </div>
+
+
     <!-- Инфо -->
     <div class="page info-page" id="infoPage">
       <h2>Информация о $MORI</h2>
@@ -423,9 +437,12 @@
   <p>Замораживайте $MORI — получайте до <strong style="color:#FFD500;">100% годовых</strong> в MORI или до <strong style="color:#FFD500;">150% в XP</strong>.<br>Сроки: 1 / 3 / 6 / 12 месяцев. Ранний вывод — штраф 50%. Чем дольше держите — тем больше зарабатываете. Застейкать → <a href="https://moristake.in" target="_blank" style="color:#FFD500;">moristake.in</a>
   </p>
 </div>
+
       <div class="info-block">
   <h3></i> Поддержка и ссылки</h3>
+
   <div style="text-align:center; font-size:15px;">
+
     <!-- Официальный сайт -->
     <div style="margin:26px 0;">
       <strong style="color:#FFD500;"><i class="fas fa-globe"></i> Официальный сайт</strong><br>
@@ -434,6 +451,7 @@
         <i class="fas fa-external-link-alt"></i> morico.in
       </a>
     </div>
+
     <!-- Казино -->
     <div style="margin:26px 0;">
       <strong style="color:#FFD500;"><i class="fas fa-dice"></i> Казино MORI WIN (18+)</strong><br>
@@ -445,6 +463,7 @@
         <i class="fab fa-telegram-plane"></i> @MoriWinOfficial
       </a>
     </div>
+
     <!-- VPN -->
     <div style="margin:26px 0;">
       <strong style="color:#FFD500;"><i class="fas fa-shield-alt"></i> Собственный VPN</strong><br>
@@ -456,19 +475,22 @@
         <i class="fab fa-telegram-plane"></i> @MoriVpnOfficial
       </a>
     </div>
+
     <!-- Сообщество -->
     <div style="margin:32px 0 16px;">
       <strong style="color:#FFD500; font-size:17px;"><i class="fas fa-users"></i> Сообщество</strong><br>
       <span style="opacity:0.8; font-size:14px;">Сильнейшее комьюнити — более 80 000 участников.
 Обмен опытом, обсуждение идей и новостей проекта, поддержка и бонусы для участников — всё в одном месте. MORI — это не просто токен, это активное сообщество людей, объединённых одной идеей.</span>
     </div>
+
     <div style="line-height:2.3;">
-      <div><a href="https://t.me/moriappbot" target="_blank" style="color:#FFD500; text-decoration:none;"><i class="fas fa-robot"></i> @moriappbot — бот</a></div>
+      <div><a href="https://t.me/MORIAPPBOT?start=TES36T" target="_blank" style="color:#FFD500; text-decoration:none;"><i class="fas fa-robot"></i> @moriappbot — бот</a></div>
       <div><a href="https://t.me/moricoin_official" target="_blank" style="color:#FFD500; text-decoration:none;"><i class="fas fa-bullhorn"></i> @moricoin_official — новости</a></div>
       <div><a href="https://t.me/moriforum" target="_blank" style="color:#FFD500; text-decoration:none;"><i class="fas fa-comments"></i> @moriforum — главный чат</a></div>
       <div><a href="https://t.me/moriwork" target="_blank" style="color:#FFD500; text-decoration:none;"><i class="fas fa-briefcase"></i> @moriwork — рабочий чат</a></div>
       <div><a href="https://t.me/moriclipforum" target="_blank" style="color:#FFD500; text-decoration:none;"><i class="fas fa-video"></i> @moriclipforum — нарезки</a></div>
     </div>
+
     <!-- YouTube -->
     <div style="margin:32px 0 10px;">
       <strong style="color:#FFD500;"><i class="fab fa-youtube"></i> YouTube</strong><br>
@@ -477,10 +499,14 @@
         youtube.com/@mori_coin
       </a>
     </div>
+
   </div>
 </div>
+
+
       </div>
     </div>
+
     <!-- Нижнее меню -->
     <div class="premium-bottom-nav">
        <button class="nav-item" data-page="buyPage"><i class="fas fa-home"></i><span>Главная</span></button>
@@ -489,6 +515,8 @@
       <button class="nav-item" data-page="infoPage"><i class="fas fa-info-circle"></i><span>Инфо</span></button>
     </div>
   </div>
+
+
 <script>
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
@@ -498,8 +526,10 @@
     let userHasEditedPrice = false;
     let lastPriceUpdate = null;
     let tvWidget = null;
+
     const navItems = document.querySelectorAll('.nav-item[data-page]');
     const pages = document.querySelectorAll('.page');
+
     navItems.forEach(item => {
       item.addEventListener('click', () => {
         const target = item.dataset.page;
@@ -513,11 +543,13 @@
         }
       });
     });
+
     function initTradingViewChart() {
       const container = document.getElementById('chartContainer');
       const loadingEl = document.getElementById('chartLoading');
       if (loadingEl) loadingEl.style.display = 'block';
       if (tvWidget) return;
+
       const script = document.createElement('script');
       script.src = 'https://s3.tradingview.com/tv.js';
       script.onload = () => {
@@ -541,6 +573,7 @@
       };
       document.head.appendChild(script);
     }
+
     async function loadCourse(retry = 0) {
       const max = 3;
       const statusElements = [document.getElementById('courseStatus'), document.getElementById('buyCourseStatus')];
@@ -567,6 +600,7 @@
       }
     }
     loadCourse(); setInterval(loadCourse, 300000);
+
     async function fetchCoinData() {
       try {
         const ctrl = new AbortController();
@@ -582,6 +616,7 @@
       } catch (e) { console.log('CoinGecko full data:', e); }
     }
     fetchCoinData(); setInterval(fetchCoinData, 60000);
+
     function updateAllPrices() {
       if (Object.keys(coinData).length === 0) return;
       const market = coinData.market_data || {};
@@ -590,6 +625,7 @@
       updateCalcPriceBtn(priceUSD, priceRUB);
       updatePricePage(market, coinData.image?.large, coinData.links);
     }
+
     function updateCalcPriceBtn(priceUSD, priceRUB) {
       if (typeof mode === 'undefined' || mode !== 'MORI' || !usdToRub) return;
       const display = currentCurrency === 'USD' ? priceUSD : priceRUB;
@@ -609,51 +645,63 @@
         };
       }
     }
+
     function updatePricePage(market, logoUrl, links) {
       if (logoUrl) {
         document.getElementById('coinLogo').src = logoUrl;
         document.getElementById('coinLogo').style.display = 'block';
       }
+
       const priceUSD = market.current_price?.usd || 0;
       document.getElementById('currentPriceBig').textContent = `$${priceUSD.toFixed(6)}`;
+
       const change24h = market.price_change_percentage_24h || 0;
       const changeEl = document.getElementById('priceChange24h');
       changeEl.textContent = `${change24h > 0 ? '+' : ''}${change24h.toFixed(2)}% (24ч)`;
       changeEl.className = 'price-change ' + (change24h > 0 ? 'positive' : change24h < 0 ? 'negative' : '');
+
       if (lastPriceUpdate) {
         document.getElementById('priceUpdateTime').textContent = `Обновлено: ${lastPriceUpdate.toLocaleTimeString('ru-RU')}`;
       }
+
       const formatNumber = (num, decimals = 0) => num ? num.toLocaleString('ru-RU', { maximumFractionDigits: decimals }) : '-';
       const formatUSD = (num) => num ? `$${formatNumber(num, 0)}` : '-';
+
       document.getElementById('marketCap').textContent = formatUSD(market.market_cap?.usd);
       document.getElementById('volume24h').textContent = formatUSD(market.total_volume?.usd);
       document.getElementById('circulatingSupply').textContent = formatNumber(market.circulating_supply, 0) + ' $MORI';
       document.getElementById('totalSupply').textContent = formatNumber(market.total_supply, 0) + ' $MORI';
+
       // ATH & ATL
       const athUSD = market.ath?.usd || 0;
       const atlUSD = market.atl?.usd || 0;
       const high24hUSD = market.high_24h?.usd || 0;
       const low24hUSD = market.low_24h?.usd || 0;
+
       const athRub = usdToRub ? (athUSD * usdToRub).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₽' : '- ₽';
       const atlRub = usdToRub ? (atlUSD * usdToRub).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₽' : '- ₽';
       const high24hRub = usdToRub ? (high24hUSD * usdToRub).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₽' : '- ₽';
       const low24hRub = usdToRub ? (low24hUSD * usdToRub).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ₽' : '- ₽';
+
       document.getElementById('ath').innerHTML = `$${athUSD.toFixed(6)}<small>${athRub}</small>`;
       document.getElementById('atl').innerHTML = `$${atlUSD.toFixed(6)}<small>${atlRub}</small>`;
       document.getElementById('high24h').innerHTML = `$${high24hUSD.toFixed(6)}<small>${high24hRub}</small>`;
       document.getElementById('low24h').innerHTML = `$${low24hUSD.toFixed(6)}<small>${low24hRub}</small>`;
+
       // Ссылки
       const websiteEl = document.getElementById('websiteLink');
       if (links?.homepage?.[0]) {
         websiteEl.href = links.homepage[0];
         websiteEl.style.display = 'flex';
       } else websiteEl.style.display = 'none';
+
       const twitterEl = document.getElementById('twitterLink');
       if (links?.twitter_screen_name) {
         twitterEl.href = `https://twitter.com/${links.twitter_screen_name}`;
         twitterEl.style.display = 'flex';
       } else twitterEl.style.display = 'none';
     }
+
     // === Остальной код калькулятора (без изменений) ===
     const btnMORI = document.getElementById('btnMORI');
     const btnXP = document.getElementById('btnXP');
@@ -673,14 +721,17 @@
     let mode = 'MORI';
     let currentCurrency = 'USD';
     const XP_PER_MORI = 50;
+
     btnMORI.onclick = () => { if (mode === 'MORI') return; mode = 'MORI'; setModeActive('btnMORI'); showMoriMode(); };
     btnXP.onclick = () => { if (mode === 'XP') return; mode = 'XP'; setModeActive('btnXP'); showXPMode(); };
     btnStake.onclick = () => { if (mode === 'Stake') return; mode = 'Stake'; setModeActive('btnStake'); showStakeMode(); calcStake(); };
+
     function setModeActive(activeId) {
       [btnMORI, btnXP, btnStake].forEach(b => b.classList.remove('active'));
       document.getElementById(activeId).classList.add('active');
       resultsBlock.style.display = 'none';
     }
+
     function showMoriMode() {
       currencyToggle.style.display = 'flex';
       priceGroup.style.display = 'block';
@@ -691,6 +742,7 @@
       tokenInput.style.display = 'block';
       calcBtn.style.display = 'block';
     }
+
     function showXPMode() {
       currencyToggle.style.display = 'none';
       priceGroup.style.display = 'none';
@@ -702,6 +754,7 @@
       tokenInput.style.display = 'block';
       calcBtn.style.display = 'block';
     }
+
     function showStakeMode() {
       currencyToggle.style.display = 'none';
       priceGroup.style.display = 'none';
@@ -711,12 +764,14 @@
       calcBtn.style.display = 'none';
       resultsBlock.style.display = 'none';
     }
+
     // Stake
     const stakeAmount = document.getElementById('stakeAmount');
     const stakeResult = document.getElementById('stakeResult');
     const stakeInitial = document.getElementById('stakeInitial');
     const stakeProfit = document.getElementById('stakeProfit');
     const stakeTotal = document.getElementById('stakeTotal');
+
     document.querySelectorAll('.stake-btn').forEach(btn => {
       btn.onclick = () => {
         document.querySelectorAll('.stake-btn').forEach(b => b.classList.remove('active'));
@@ -725,6 +780,7 @@
       };
     });
     stakeAmount.addEventListener('input', calcStake);
+
     function calcStake() {
       const active = document.querySelector('.stake-btn.active');
       if (!active || stakeAmount.value.trim() === '') {
@@ -733,14 +789,17 @@
       }
       const amount = parseFloat(stakeAmount.value.replace(/,/g, '.')) || 0;
       if (amount <= 0) { stakeResult.style.display = 'none'; return; }
+
       const months = parseInt(active.dataset.months);
       const apr = parseInt(active.dataset.apr);
       let shortPeriod = months === 1 ? '1 месяц' : (months >= 5 || months === 12) ? months + ' месяцев' : months + ' месяца';
+
       const profit = amount * (apr / 100) * (months / 12);
       const total = amount + profit;
       const now = new Date();
       const unlockDate = new Date(now.getFullYear(), now.getMonth() + months, now.getDate());
       const formattedDate = unlockDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).replace(' г.', '');
+
       stakeInitial.textContent = Number(amount).toLocaleString('ru-RU') + ' MORI';
       stakeProfit.textContent = '+' + Math.round(profit).toLocaleString('ru-RU') + ' MORI';
       stakeTotal.textContent = Math.round(total).toLocaleString('ru-RU') + ' MORI';
@@ -748,11 +807,13 @@
       document.getElementById('unlockDate').textContent = formattedDate;
       stakeResult.style.display = 'block';
     }
+
     // Кнопки валют в калькуляторе
     const btnUSD = document.getElementById('btnUSD');
     const btnRUB = document.getElementById('btnRUB');
     btnUSD.onclick = () => { if (currentCurrency === 'USD') return; currentCurrency = 'USD'; btnUSD.classList.add('active'); btnRUB.classList.remove('active'); updateCalcPriceBtn(coinData.market_data?.current_price?.usd, coinData.market_data?.current_price?.rub); };
     btnRUB.onclick = () => { if (currentCurrency === 'RUB') return; currentCurrency = 'RUB'; btnRUB.classList.add('active'); btnUSD.classList.remove('active'); updateCalcPriceBtn(coinData.market_data?.current_price?.usd, coinData.market_data?.current_price?.rub); };
+
     calcBtn.onclick = () => {
       if (!usdToRub || Object.keys(coinData).length === 0) { alert('Данные не загружены. Подождите или обновите страницу.'); return; }
       const market = coinData.market_data || {};
@@ -760,6 +821,7 @@
       const raw = tokenInput.value.replace(',', '.').trim();
       const amount = parseFloat(raw) || 0;
       if (amount <= 0) { alert('Введите корректное значение'); return; }
+
       let totalUSD, totalRUB, moriFromXP = 0;
       if (mode === 'MORI') {
         const priceInput = parseFloat(tokenPriceInput.value.replace(',', '.')) || priceUSD;
@@ -770,10 +832,13 @@
         totalUSD = moriFromXP * priceUSD;
       }
       totalRUB = totalUSD * usdToRub;
+
       const usdStr = totalUSD.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + ' $';
       const rubStr = totalRUB.toLocaleString('ru-RU', { maximumFractionDigits: 0 }) + ' ₽';
+
       resultsBlock.style.display = 'block'; resultsBlock.style.opacity = 0;
       setTimeout(() => resultsBlock.style.opacity = 1, 50);
+
       if (mode === 'MORI') {
         resultPrimary.innerHTML = `<p>Стоимость в USD: <strong class="highlight">${usdStr}</strong></p>`;
         resultSecondary.innerHTML = `<p>Стоимость в RUB: <strong class="highlight">${rubStr}</strong></p>`;
@@ -785,6 +850,7 @@
         resultTertiary.innerHTML = `<p>Стоимость в RUB: <strong class="highlight">${rubStr}</strong></p>`;
       }
     };
+
     // Покупка
     const buyBtnRUB = document.getElementById('buyBtnRUB');
     const buyBtnUSD = document.getElementById('buyBtnUSD');
@@ -794,8 +860,10 @@
     const buyResultMori = document.getElementById('buyResultMori');
     const buyResultFiat = document.getElementById('buyResultFiat');
     let buyCurrency = 'RUB';
+
     buyBtnRUB.onclick = () => { if (buyCurrency === 'RUB') return; buyCurrency = 'RUB'; buyBtnRUB.classList.add('active'); buyBtnUSD.classList.remove('active'); };
     buyBtnUSD.onclick = () => { if (buyCurrency === 'USD') return; buyCurrency = 'USD'; buyBtnUSD.classList.add('active'); buyBtnRUB.classList.remove('active'); };
+
     buyCalcBtn.onclick = () => {
       if (!usdToRub || Object.keys(coinData).length === 0) { alert('Данные не загружены. Подождите или обновите страницу.'); return; }
       const market = coinData.market_data || {};
@@ -803,23 +871,31 @@
       const raw = buyInput.value.replace(',', '.').trim();
       const amountFiat = parseFloat(raw) || 0;
       if (amountFiat <= 0) { alert('Введите корректное значение'); return; }
+
       let amountInUSD = buyCurrency === 'USD' ? amountFiat : (amountFiat / usdToRub);
       let moriAmount = amountInUSD / priceUSD;
+
       const moriStr = moriAmount.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + ' $MORI';
       const fiatStr = amountFiat.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + (buyCurrency === 'USD' ? ' $' : ' ₽');
+
       buyResultsBlock.style.display = 'block';
       buyResultMori.innerHTML = `<p>Вы получите: <strong class="highlight">${moriStr}</strong></p>`;
       buyResultFiat.innerHTML = `<p>На сумму: <strong class="highlight">${fiatStr}</strong></p>`;
     };
+    
+    
+
 // Живые данные с Mori API + ПРИНУДИТЕЛЬНЫЙ ЗОЛОТОЙ ЦВЕТ #FFD500
 async function loadData() {
   const el = document.getElementById('totalStaked');
   const elTvl = document.getElementById('tvlUsd');
+  
   try {
     const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://moristake.in/api/v2/pool/total-staked');
     const resp = await fetch(proxyUrl);
     const proxyData = await resp.json();
     const data = JSON.parse(proxyData.contents);
+   
     if (data.success && data.data.mori > 0) {
       const amount = Number(data.data.mori).toLocaleString('ru-RU');
       el.innerHTML = `<strong>${amount}</strong> $MORI`;
@@ -828,6 +904,7 @@ async function loadData() {
     } else {
       throw new Error('Нет данных');
     }
+
     if (data.data.usd > 0) {
       const tvl = Number(data.data.usd).toLocaleString('ru-RU');
       elTvl.innerHTML = `<strong>$${tvl}</strong>`;
@@ -841,14 +918,22 @@ async function loadData() {
     console.error('Ошибка:', err);
     el.textContent = 'Не удалось загрузить';
     el.style.color = '#ff6b6b';
+    
     if (elTvl) {
       elTvl.textContent = 'Не удалось загрузить';
       elTvl.style.color = '#ff6b6b';
     }
   }
 }
+
 loadData();
 setInterval(loadData, 10000);
+
+
+
+
 </script>
+
+
 </body>
 </html>
