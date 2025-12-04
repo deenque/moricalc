@@ -307,6 +307,12 @@
       </div>
 
 <!-- Stake -->
+        <!-- НОВЫЙ БЛОК: Всего застейкано -->
+  <div style="text-align:center; margin-bottom:16px; padding:10px; background:rgba(255,213,0,0.08); border-radius:12px; border:1px solid rgba(255,213,0,0.2);">
+    <div style="font-size:12px; color:rgba(255,255,255,0.7);">Всего в проекте застейкано:</div>
+    <div id="stakeTotalStaked" style="font-size:18px; font-weight:700; color:#FFD500; margin-top:4px;">Загрузка...</div>
+  </div>
+      
 <div class="stake-section" id="stakeSection">
   
   <div class="stake-title">Прогноз стейкинга</div>
@@ -314,11 +320,7 @@
        <label style="display:block; text-align:center;">Введите сумму $MORI для стейкинга:</label>
           <input type="text" id="stakeAmount" class="token-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
         </div>
-   <!-- НОВЫЙ БЛОК: Всего застейкано -->
-  <div style="text-align:center; margin-bottom:16px; padding:10px; background:rgba(255,213,0,0.08); border-radius:12px; border:1px solid rgba(255,213,0,0.2);">
-    <div style="font-size:12px; color:rgba(255,255,255,0.7);">Всего в проекте застейкано:</div>
-    <div id="stakeTotalStaked" style="font-size:18px; font-weight:700; color:#FFD500; margin-top:4px;">Загрузка...</div>
-  </div>
+ 
   
         <div class="stake-title">Срок стейкинга</div>
         <div class="stake-subtitle">(максимум 12 месяцев)</div>
@@ -758,7 +760,7 @@
       priceGroup.style.display = 'block';
       xpInfo.style.display = 'none';
       stakeSection.style.display = 'none';
-      inputLabel.textContent = 'Количество ваших токенов:';
+      inputLabel.textContent = 'Введите количество ваших токенов:';
       tokenInput.placeholder = 'Например: 1000';
       tokenInput.style.display = 'block';
       calcBtn.style.display = 'block';
@@ -769,7 +771,7 @@
       priceGroup.style.display = 'none';
       xpInfo.style.display = 'block';
       stakeSection.style.display = 'none';
-      inputLabel.textContent = 'Количество вашей валюты:';
+      inputLabel.textContent = 'Введите количество вашей валюты:';
       tokenInput.placeholder = 'Например: 5000';
       tokenInput.value = '';
       tokenInput.style.display = 'block';
@@ -780,7 +782,7 @@
       currencyToggle.style.display = 'none';
       priceGroup.style.display = 'none';
       xpInfo.style.display = 'none';
-      inputLabel.textContent = 'Количество ваших токенов:';
+      inputLabel.textContent = 'Количество ваших токенов для стейкинга:';
       stakeSection.style.display = 'block';
       tokenInput.style.display = 'none';
       calcBtn.style.display = 'none';
