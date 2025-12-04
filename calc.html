@@ -260,7 +260,7 @@
   </style>
 </head>
 <body>
-  <div class="app-container">
+ <div class="app-container">
   <div class="page calculator-page active" id="calculatorPage">
     <h2>Прогноз дохода $MORI</h2>
     <br>
@@ -272,13 +272,14 @@
       <button id="btnStake">Stake</button>
     </div>
 
-    <!-- Режим: $MORI -->
-    <div class="mode-section" id="modeMORI" style="display:block;">
+    <!-- === Режим: $MORI === -->
+    <div class="mode-section" id="modeMORI" style="display: block;">
       <div class="input-group">
-        <label style="display:block; text-align:center;" id="inputLabel">Количество ваших токенов:</label>
+        <label style="display:block; text-align:center;">Количество ваших токенов:</label>
         <input type="text" id="tokenInput" class="token-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
       </div>
 
+      <!-- ВСЁ, что касается цены — ТОЛЬКО здесь -->
       <div class="input-group" id="priceGroup">
         <label style="display:block; text-align:center;">Желаемая цена $MORI:</label>
         <p style="font-size:12px;color:rgba(255,255,255,0.6);margin:4px 0 0;text-align:center;line-height:1.2;">
@@ -303,27 +304,30 @@
       <p class="xp-info" id="xpInfo">Курс: 1 $MORI = 50 XP</p>
     </div>
 
-    <!-- Режим: XP -->
-    <div class="mode-section" id="modeXP" style="display:none;">
+    <!-- === Режим: XP === -->
+    <div class="mode-section" id="modeXP" style="display: none;">
       <div class="input-group">
         <label style="display:block; text-align:center;">Количество XP:</label>
         <input type="text" id="xpInput" class="token-input" placeholder="Например: 50000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
       </div>
     </div>
 
-    <!-- Режим: Stake -->
-    <div class="mode-section" id="modeStake" style="display:none;">
+    <!-- === Режим: Stake === -->
+    <div class="mode-section" id="modeStake" style="display: none;">
       <div class="input-group">
         <label style="display:block; text-align:center;">Сумма в Stake:</label>
         <input type="text" id="stakeInput" class="token-input" placeholder="Например: 1000" inputmode="decimal" enterkeyhint="done" autocomplete="off">
       </div>
     </div>
 
-    <!-- Общие элементы (кнопка и результаты) -->
+    <!-- Общие элементы -->
     <button class="btn" id="calcBtn">Рассчитать</button>
-    <div class="course-info" id="courseInfo">
+
+    <!-- Курс USD/RUB — ТОЛЬКО в режиме $MORI -->
+    <div class="course-info" id="courseInfo" style="display: block;">
       Курс USD/RUB: <span id="courseStatus">Загрузка...</span>
     </div>
+
     <div class="results" id="resultsBlock">
       <div id="resultPrimary"></div>
       <div id="resultSecondary"></div>
@@ -856,7 +860,36 @@
       stakeResult.style.display = 'block';
     }
     
-    
+    function showMode(mode) {
+  // Скрыть все режимы
+  document.querySelectorAll('.mode-section').forEach(el => el.style.display = 'none');
+  // Показать нужный
+  document.getElementById(`mode${mode}`).style.display = 'block';
+
+  // Показывать курс только в режиме MORI
+  document.getElementById('courseInfo').style.display = (mode === 'MORI') ? 'block' : 'none';
+}
+
+function setActiveButton(activeId) {
+  ['btnMORI', 'btnXP', 'btnStake'].forEach(id => {
+    document.getElementById(id).classList.toggle('active', id === activeId);
+  });
+}
+
+// Обработчики
+document.getElementById('btnMORI').addEventListener('click', () => {
+  setActiveButton('btnMORI');
+  showMode('MORI');
+});
+document.getElementById('btnXP').addEventListener('click', () => {
+  setActiveButton('btnXP');
+  showMode('XP');
+});
+document.getElementById('btnStake').addEventListener('click', () => {
+  setActiveButton('btnStake');
+  showMode('Stake');
+});
+  
 
     // Кнопки валют в калькуляторе
     const btnUSD = document.getElementById('btnUSD');
